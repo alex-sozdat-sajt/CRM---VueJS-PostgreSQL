@@ -1,0 +1,37 @@
+const express = require('express')
+const userRouter = require('./routes/user.routes')
+const postRouter = require('./routes/post.routes')
+const PORT = process.env.PORT || 8080
+const app = express()
+const fs = require('fs')
+
+
+app.use(express.json())
+
+// app.get('/', (req, res) => {
+//     res.send('Hello PostGress + NODEJS!')
+// })
+app.use('/api', userRouter)
+app.use('/api', postRouter)
+
+
+app.listen(PORT, () => console.log(`server started on port ${PORT}`))
+    // Чтение Запись файла на колбеках, асинхронность на колбеках
+fs.readFile('index.js', 'UTF8', (err, buffer) => {
+    if (err) {
+        console.log(err);
+        process.exit(0); //выход из прогр если ошибкаы
+    };
+    console.log('File size: ' + buffer.length)
+    const src = buffer.toString();
+    const lines = src.split('\n').filter(line => !!line);
+    const content = lines.join('\n');
+    fs.writeFile('index3.txt', content, err => {
+        if (err) {
+            console.log(err);
+            process.exit(0); //выход из прогр если ошибкаы
+        };
+        console.log('New file size: ' + content.length);
+    });
+});
+console.log('Rede file async example');
