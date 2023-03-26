@@ -88,7 +88,7 @@ http.createServer((req, res) => {
                 console.log('////// args///////', args)
                 console.log('//////////////////args///////////', args.email, args.password, args.name, args.email)
                      
-                const sql = `INSERT INTO crmuser VALUES ('${args.password}', '${args.name}', '${args.email}', '${args.user_id}')`;
+                const sql = `INSERT INTO crmuser VALUES ('${args.password}', '${args.name}', '${args.email}', '${args.user_id}', ${args.bill})`;
                 
                 console.log('sql', sql)
                 // try {
@@ -98,19 +98,7 @@ http.createServer((req, res) => {
                         }
                      });
                      
-                    // }
-                    // catch (e) {
-                        // res.end(req.url)
-                        // throw e;
-                    // }
-                
-                // pool.query(sql_1, (err, resp2) => {
-                //     if (err) {
-                //         throw err;
-                //     }
-                //     console.log('resp2resp2resp2resp2resp2resp2resp2resp2resp2resp2resp2resp2resp2resp2resp2resp2', resp2)
-                //     res.end('ok')
-                // })
+                     
                    
                 });
                  

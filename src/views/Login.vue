@@ -91,7 +91,7 @@ import messages from '@/utils/messages'
       try {
       await this.$store.dispatch('login', formData)
       console.log('formData ', formData)
-      // this.$router.push('/')
+      this.$router.push('/')
       }
       catch (e){
 

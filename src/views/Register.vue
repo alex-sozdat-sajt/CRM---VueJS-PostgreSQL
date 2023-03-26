@@ -175,102 +175,97 @@ export default {
         password: this.password,
         name: this.name,
         email: this.email,
+        bill: 1000,
 
       };
-       
+      try{
+      await this.$store.dispatch('register', formData)
       console.log('formData ', formData)
-      let chek_e_mail=(mail)=>{
-        let data = this.response_from_DB
-         console.log(' !!!!!!!!tdata!!!!!!!', data.length)
-         console.log(' !!!!!!!!tdata!!!!!!!', data)
-        //  console.log(' !!!!!!!!this.response_from_DB!!!!!!!', this.response_from_DB)
-         console.log(' !!!!!!!!mail!!!!!!!', mail)
-          for(let i=0; i < data.length; i++){
-            
-             
-            if (mail === data[`${i}`].e_mail1){
-               console.log(`!!${mail}!!`     ,data[`${i}`].e_mail1)
-               console.log(`ТАКОЙ емеил ${mail} уже есть выберите другой`)
-               alert(`ТАКОЙ емеил ${mail} уже есть выберите другой`);
-                       
-            } else{
-               console.log(`!!${mail}!!`     ,data[`${i}`].e_mail1)
-            }
-                
-          }
-          alert(`ТАКОГО емеил ${mail} еще нет`);
-          return true
-         }
-       if(chek_e_mail(this.email)){
-            console.log(JSON.stringify(formData))
-          let response = await fetch('http://localhost:8000/crmadduser', {
-           method: 'POST',
-           headers: {
-             'Content-Type': 'application/json;charset=utf-8'
-          },
-          body: JSON.stringify(formData)
-           
-        })
-          .then(console.log('alert(`ЕМЕИЛ ЗАРЕГАН`);'))
-        //.then(this.dataFromDb())
-        // this.$router.push('/')
-         let result = await response;
+      }catch (e){
+
       }
-       // this.dataFromDb(); //функция не срабатывает потому что исполняется быстрее нежели изменения дойдут до таблицы
-         
-         
+      //   let chek_e_mail=(mail)=>{
+      //   let data = this.response_from_DB
+      //    console.log(' !!!!!!!!tdata!!!!!!!', data.length)
+      //    console.log(' !!!!!!!!tdata!!!!!!!', data)
+      //   //  console.log(' !!!!!!!!this.response_from_DB!!!!!!!', this.response_from_DB)
+      //    console.log(' !!!!!!!!mail!!!!!!!', mail)
+      //     for(let i=0; i < data.length; i++){
+            
+      //       if (mail === data[`${i}`].e_mail1){
+      //          console.log(`!!${mail}!!`     ,data[`${i}`].e_mail1)
+      //          console.log(`ТАКОЙ емеил ${mail} уже есть выберите другой`)
+      //          alert(`ТАКОЙ емеил ${mail} уже есть выберите другой`);
+                    
+      //       } else{
+      //          console.log(`!!${mail}!!`     ,data[`${i}`].e_mail1)
+      //       }
+                
+      //     }
+      //     alert(`ТАКОГО емеил ${mail} еще нет`);
+      //     return true
+      //    }
+      //  if(chek_e_mail(this.email)){
+      //       console.log(JSON.stringify(formData))
+      //     let response = await fetch('http://localhost:8000/crmadduser', {
+      //      method: 'POST',
+      //      headers: {
+      //        'Content-Type': 'application/json;charset=utf-8'
+      //     },
+      //     body: JSON.stringify(formData)
+           
+      //   })
+      //     .then(console.log('alert(`ЕМЕИЛ ЗАРЕГАН`);'))
         
-        
+      //   // this.$router.push('/')
+      //    let result = await response;
+      // }
+      
     },
-    //  chek_e_mail(mail){
-    //    console.log('mail', mail);
-       
-    //    for(let i=0; i <= this.response_from_DB.length; i++){
-    //         console.log(`data[${i}].e_mail1` , this.response_from_DB[`${i}`].e_mail1);
-    //         if (mail == this.response_from_DB[`${i}`].e_mail1){
-    //            console.log('ТАКОЙ емеил уже есть выберите другой')
-    //            alert('ТАКОЙ емеил уже есть выберите другой');
-    //            return false
-    //         }else{
-    //           return true
-    //         }
-    //       }
-    //  },      
-    dataFromDb(){
-     
-      this.reqest_button_name='todo'; 
-        this.var='';
-        this.var_req_to_db='';
-        const url = `http://localhost:8000/dataFromDb`;
-      http.get(url, res =>{
-         // console.log(res.req._header);
-        console.dir('res.headers', res.headers);
-        if (res.statusCode != 200){
-          const {statusCode, statusMessage} = res;
-          console.log(`Status Code: ${statusCode} ${statusMessage}`);
-          return;
-        }
-        res.setEncoding('utf8');
-        const lines = [];
-        res.on('data', chunk => {
-          lines.push(chunk);
-          // console.log('lines', lines)
-          });
-        res.on('end', () => {
-          const data = JSON.parse(lines.join())['rows'];
-          // console.table(data)
-           console.log('data', data)
          
-           this.response_from_DB = data;
-            console.dir(' this.response_from_DB ',  this.response_from_DB);
-          //  console.log('data[5]e_mail1', data[5].e_mail1);
-          //  for(let i=0; i <= data.length; i++){
-          //   console.log(`data[${i}].e_mail1` , data[`${i}`].e_mail1);
-          //  }
+   async dataFromDb(){
+      try{
+      console.log('Вызван 1 ')
+      
+      await this.$store.dispatch('dataFromDb')
+      console.log('formData ', formData)
+      console.log('formData ', formData)
+      this.response_from_DB = data;
+      console.dir(' this.response_from_DB ',  this.response_from_DB);
+      }catch (e){
+
+      }
+      // this.reqest_button_name='todo'; 
+      //   this.var='';
+      //   this.var_req_to_db='';
+      //   const url = `http://localhost:8000/dataFromDb`;
+      // http.get(url, res =>{
+      //    // console.log(res.req._header);
+      //   console.dir('res.headers', res.headers);
+      //   if (res.statusCode != 200){
+      //     const {statusCode, statusMessage} = res;
+      //     console.log(`Status Code: ${statusCode} ${statusMessage}`);
+      //     return;
+      //   }
+      //   res.setEncoding('utf8');
+      //   const lines = [];
+      //   res.on('data', chunk => {
+      //     lines.push(chunk);
+           
+      //     });
+      //   res.on('end', () => {
+      //     const data = JSON.parse(lines.join())['rows'];
+           
+      //      console.log('data', data)
+
+         
+      //      this.response_from_DB = data;
+      //       console.dir(' this.response_from_DB ',  this.response_from_DB);
+          
           
 
-        })
-      })
+      //   })
+      // })
     },
      
     async deletFromDb(){
@@ -289,20 +284,7 @@ export default {
   }
 }
 
-// chek_e_mail=(this.email)=>{
-//        console.log('mail', mail);
-       
-//        for(let i=0; i <= this.response_from_DB.length; i++){
-//             console.log(`data[${i}].e_mail1` , this.response_from_DB[`${i}`].e_mail1);
-//             if (mail == this.response_from_DB[`${i}`].e_mail1){
-//                console.log('ТАКОЙ емеил уже есть выберите другой')
-//                alert('ТАКОЙ емеил уже есть выберите другой');
-//                return false
-//             }else{
-//               return true
-//             }
-//           }
-//     }
+
 </script>
 
  
