@@ -52,7 +52,7 @@ async login({dispatch, commit}, {email, password}){
                 }
       
     }catch (e){
-        throw e
+         commit('setError', e)
     }
 
 },
@@ -112,6 +112,7 @@ async register({dispatch}, formData){
 
   }catch (e){
     console.log(e)
+    commit('setError', e)
     throw e
   }
   //здесь сделать регистрацию логина и пароля в БД и создание таблицы для каждого пользователя
