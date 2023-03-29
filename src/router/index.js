@@ -65,6 +65,13 @@ const routes = [
     meta: {layout: 'main'},
     component: () =>import('../views/Record.vue')
   },
+  {
+    path: '/main',
+    name: 'MainLayout',
+     meta: {layout: 'main'},
+    // component: () =>import('../components/app/Sidebar1.vue')
+    component: () =>import('../layouts/MainLayout.vue')
+  },
   
    
 ]

@@ -181,6 +181,8 @@ export default {
       try{
       await this.$store.dispatch('register', formData)
       console.log('formData ', formData)
+      console.log('getter ', this.$store.getters('activeuser'))
+      
       }catch (e){
 
       }

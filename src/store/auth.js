@@ -1,5 +1,14 @@
 const http = require('http');
 export default {
+  state:{
+    activeuser:''
+     
+  },
+  mutations:{
+    changeActiveUser(state, payload){
+                        
+    }
+  },
 actions:{
 async login({dispatch, commit}, {email, password}){
     try{
@@ -36,7 +45,8 @@ async login({dispatch, commit}, {email, password}){
                     if (email === data[i].e_mail1 && password === data[i].user_password){
                        console.log(`!!${email}!!`     ,data[i].e_mail1)
                        console.log(`ТАКОЙ емеил ${email}, есть, пароль верный Вы вошли`)
-
+                      commit('changeActiveUser', data[i].user_id)
+                      console.log('changeActiveUser', data[i].user_id)
 
 
 
@@ -160,6 +170,12 @@ async logout(){
   //здесь реализовать отчистку логина и пароля в памяти
 }
 
+},
+getters: {
+  activeuser(state){
+    console.log('state.activeuser ', state.activeuser)
+    return state.activeuser
+  }
 }
 
 }
