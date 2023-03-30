@@ -5,6 +5,7 @@ import router from './router'
 import store from './store'
 import dateFilter from './filters/date.filter'
 import messagePlugin from './utils/message.plugin'
+import Loader from '@/components/app/Loader'
 import vuetify from './plugins/vuetify'
 import 'materialize-css/dist/js/materialize.min'
 
@@ -12,6 +13,7 @@ Vue.config.productionTip = false
 Vue.use(messagePlugin)
 Vue.use(Vuelidate)
 Vue.filter('date', dateFilter)
+Vue.component('Loader', Loader)
 
 new Vue({
   router,

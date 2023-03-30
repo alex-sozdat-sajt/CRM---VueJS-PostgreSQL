@@ -75,7 +75,7 @@ http.createServer((req, res) => {
             res.end(JSON.stringify(resp))
         });
 
-    } else if (url == '/crmadduser') {
+    }else if (url == '/crmadduser') {
        
         
         let datafromfront = (req) => {
@@ -116,7 +116,90 @@ http.createServer((req, res) => {
         
         res.end(req.url)
 
-    } else if (url == '/todoPost') {
+    }else if (url == '/setactiveuser') {
+       
+        
+        let datafromfront = (req) => {
+            const body = [];
+            req.on('data', chunk => {
+                body.push(chunk);
+            }).on('end', async() => {
+                const data = body.join('');
+                const args = JSON.parse(data);
+                console.log('////// args///////', args)
+                     
+                const sql = `INSERT INTO activeuser VALUES ('${args.user_id}', '${args.user_status}')`;
+                
+                console.log('sql', sql)
+                // try {
+                    pool.query(sql, (err, resp1) => {
+                         if (err) {
+                             throw err;
+                        }
+                     });
+                     
+                     
+                   
+                });
+                 
+       
+        }
+         datafromfront(req)
+         
+       
+        res.writeHead(200, { 'Content-Type': 'Content-Type' });
+        const user = {
+            name :'User 1',
+            city: 'Rome',
+            proffession: 'emperor',
+        }
+        
+        res.end(req.url)
+
+    }else if (url == '/dataActiveUser') {
+        console.log('dataActiveUserdataActiveUserdataActiveUserdataActiveUser')
+        
+        let datafromfront = function(req){
+            // const body = [];
+            // req.on('data', chunk => {
+            //     body.push(chunk);
+            // }).on('end', async() => {
+            //     const data = body.join('');
+            //     const args = JSON.parse(data);
+            //     console.log('////// args///////', args)
+            //     const sql = `SELECT * FROM crmuser WHERE user_id = ('${args}')`;
+            //     console.log('sql', sql)
+            //         pool.query(sql, (err, resp1) => {
+            //              if (err) {
+            //                  throw err;
+            //             }
+            //             console.log('resp1', resp1)  
+            //             // res.end(resp1) 
+            //             const dataActiveUser_resp = resp1
+            //             return resp1
+            //          });
+            //     });
+             const sql = `SELECT * FROM crmuser WHERE user_id = '1@mail.ru3sdf'`;
+             console.log('sql.', sql)  
+              
+             console.log('req.body',req.body)  
+            pool.query(sql, (err, resp1) => {
+                 if (err) {
+                      throw err;
+                 }
+            console.log('resp1', resp1)  
+            // res.end(resp1) 
+            //  const dataActiveUser_resp = resp1
+                return resp1
+             });
+             return  
+        }
+         
+        // res.writeHead(200, { 'Content-Type': 'Content-Type' });
+        // console.log('datafromfront', datafromfront) 
+        res.end(datafromfront(req))
+    }
+     else if (url == '/todoPost') {
         console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         let datafromfront = (req) => {
            
@@ -192,12 +275,8 @@ http.createServer((req, res) => {
         res.writeHead(200, { 'Content-Type': 'Content-Type' });
         res.end(req.url)
     } else if (url == '/todoDeletAll') {
-        
         let datafromfront = (req) => {
-             
-
                 const sql = `DELETE FROM crmuser`;
-
                 console.log('sql', sql)
                 pool.query(sql, (err, resp) => {
                     if (err) {
@@ -206,14 +285,42 @@ http.createServer((req, res) => {
                     console.log('resp', resp)
                         // res.end(JSON.stringify(resp))
                 });
-
-             
         }
         datafromfront(req)
         res.writeHead(200, { 'Content-Type': 'Content-Type' });
         res.end(req.url)
-    }
-    else {
+    }else if (url == '/todoDeletAll') {
+        let datafromfront = (req) => {
+                const sql = `DELETE FROM crmuser`;
+                console.log('sql', sql)
+                pool.query(sql, (err, resp) => {
+                    if (err) {
+                        throw err;
+                    }
+                    console.log('resp', resp)
+                        // res.end(JSON.stringify(resp))
+                });
+        }
+        datafromfront(req)
+        res.writeHead(200, { 'Content-Type': 'Content-Type' });
+        res.end(req.url)
+    }else if (url == '/deleteActiveUser') {
+        console.log('deleteActiveUserdeleteActiveUserdeleteActiveUserdeleteActiveUser')
+        let datafromfront = (req) => {
+                const sql = `DELETE FROM activeuser`;
+                console.log('sql', sql)
+                pool.query(sql, (err, resp) => {
+                    if (err) {
+                        throw err;
+                    }
+                    console.log('resp', resp)
+                        // res.end(JSON.stringify(resp))
+                });
+        }
+        datafromfront(req)
+        res.writeHead(200, { 'Content-Type': 'Content-Type' });
+        res.end(req.url)
+    }else {
         const { url } = req;
         const name = url === '/' ? '/index.html' : url;
         // console.log('name - ', name)

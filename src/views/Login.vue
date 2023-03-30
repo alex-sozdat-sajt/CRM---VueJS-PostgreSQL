@@ -85,13 +85,32 @@ import messages from '@/utils/messages'
         return
       }const formData = {
         email: this.email,
-        password: this.password
+        password: this.password,
+        thi: this
 
       }
       try {
-      await this.$store.dispatch('login', formData)
-      console.log('formData ', formData)
-      this.$router.push('/')
+      await this.$store.dispatch('login', formData).then(
+
+       console.log('this.$store.getters.activeuser '))
+      // if(this.$store.getters.activeuser){
+      // this.$router.push('/')
+      // }else{
+      //   allert('Такого пользователя нет!')
+      // }
+       
+      
+      // if(this.$store.gettres.activeuser){
+      //   this.$router.push('/')
+      // }else{
+      //   alert('такого пользователя нет')
+      // }
+      //  this.$router.push('/')
+      // .then (this.$router.push('/'))
+      // console.log('formData login', formData)
+      //  console.log('this.$store.gettres.activeuser ', this.$store.gettres.activeuser)
+      //console.log('this.$store.state.activeuser ', this.$store.state.activeuser)
+       
       }
       catch (e){
 

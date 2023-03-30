@@ -7,19 +7,19 @@
  
 export default {
    
-   computed:{
-    error(){
-     return this.$store.getters.error
-    }
-   },
-   watch: {
-    error(fbErrors) {
-      console.log(fbErrors)
-    }
-   },
-  components:{
+  //  computed:{
+  //   error(){
+  //    return this.$store.getters.error
+  //   }
+  //  },
+  //  watch: {
+  //   error(fbErrors) {
+  //     console.log(fbErrors)
+  //   }
+  //  },
+  // components:{
 
  
-  }
+  // }
 }
 </script>

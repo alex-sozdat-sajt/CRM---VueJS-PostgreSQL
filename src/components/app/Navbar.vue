@@ -16,7 +16,7 @@
                 data-target="dropdown"
                 ref="dropdown"
             >
-              USER NAME
+              {{userName}}
               <i class="material-icons right">arrow_drop_down</i>
             </a>
 
@@ -41,6 +41,7 @@
 <script>
 export default {
   data: () =>({
+    userName:'',
     date: new Date(),
     interval: null,
     dropdown: null
@@ -52,7 +53,7 @@ export default {
       this.$router.push('/login?message=logout')
     }
   },
-  mounted(){
+  async mounted(){
     this.interval = setInterval(()=>{
       this.date = new Date()
     },100000)
@@ -60,6 +61,13 @@ export default {
     this.dropdown = M.Dropdown.init(this.$refs.dropdown, {
       constrainWidth: true
     })
+     
+    console.log('mounted this.$store.gettres.activeuser ', this.$store.getters.activeuser)               
+    this.userName = this.$store.getters.activeuser 
+    console.log('this.$store.gettres.activeuser ', this.$store.getters.activeuser)
+    // debugger
+       
+
   },
   beforeDestroy(){
     console.log('before destroy')

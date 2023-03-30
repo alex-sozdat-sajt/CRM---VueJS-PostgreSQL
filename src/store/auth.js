@@ -1,24 +1,41 @@
 const http = require('http');
 export default {
   state:{
-    activeuser:''
+    activeuser:'' 
      
   },
+  getters: {
+    activeuser(state){
+      console.log('getters state.activeuser ', state.activeuser)
+       
+      return state.activeuser
+    }
+  },
   mutations:{
-    changeActiveUser(state, payload){
-                        
+    setActiveUser(state, payload){
+      state.activeuser = ''
+      state.activeuser = payload
+      console.log('setActiveUser', payload)
+      console.log('state activeuser', state.activeuser )
+    },
+    clearActiveUser(state){
+      console.log('state activeuser 1', state.activeuser)
+      state.activeuser = ''
+      console.log('state activeuser 2', state.activeuser)
     }
   },
 actions:{
-async login({dispatch, commit}, {email, password}){
+async login({dispatch, commit}, {email, password, thi}){
     try{
         console.log('email ', email)
         console.log('password ', password)
-    
+    // if(state.activeuser){
+    //   alert("Активный пользователь уже есть")
+    // }
              const url = `http://localhost:8000/dataFromDb`;
              http.get(url, res =>{
                 
-              console.dir('res.headers', res.headers);
+              console.log('res.headers', res.headers);
               if (res.statusCode != 200){
                 const {statusCode, statusMessage} = res;
                 console.log(`Status Code: ${statusCode} ${statusMessage}`);
@@ -37,27 +54,44 @@ async login({dispatch, commit}, {email, password}){
                 check(data)  
               })
             })
-            function check(data){
+            async function check(data){
                 console.log('dataHttp check', data)
                  console.log('email ', email)
+                 const router=function(){
+                  thi.$router.push('/')
+                 }
                 for(let i=0; i < data.length; i++){
                        
                     if (email === data[i].e_mail1 && password === data[i].user_password){
                        console.log(`!!${email}!!`     ,data[i].e_mail1)
                        console.log(`ТАКОЙ емеил ${email}, есть, пароль верный Вы вошли`)
-                      commit('changeActiveUser', data[i].user_id)
-                      console.log('changeActiveUser', data[i].user_id)
+                       
+                      const aciveUser={
+                        user_id: data[i].user_id,
+                        user_status:'active'
+                      }
+                      
+                      await fetch('http://localhost:8000/setactiveuser', {
+                       method: 'POST',
+                       headers: {
+                         'Content-Type': 'application/json;charset=utf-8'
+                      },
+                       
+                      body: JSON.stringify(aciveUser)
+                       
+                    })
+                    .then(commit('setActiveUser', aciveUser.user_id))
+                    .then(console.log( 'setActiveUser', data[i].user_id))
+                    .then(dispatch('dataActiveUser', aciveUser.user_id))
+                    .then(router())
 
-
-
-
-                        return false                              
+                     return false                              
                     } else{
                        console.log(`!!${email}!!`     ,data[i].e_mail1)
                     }
                         
                   }
-                  console.log(`ТАКОГО емеил ${email} нет -или не верный пароль`);
+                  alert(`ТАКОГО емеил ${email} нет -или не верный пароль`);
                    
                 }
       
@@ -165,17 +199,23 @@ async dataFromDb({dispatch, commit}){
       })
 
 },
-async logout(){
-  await console.log('LOGOUT')
+async logout({commit}){
+  console.log('LOGOUT')
+    
+       await fetch('http://localhost:8000/deleteActiveUser', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+          // 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, DELETE'
+        },
+        // body: JSON.stringify(id)
+      }).then (commit('clearActiveUser'))
+
+   
   //здесь реализовать отчистку логина и пароля в памяти
 }
 
 },
-getters: {
-  activeuser(state){
-    console.log('state.activeuser ', state.activeuser)
-    return state.activeuser
-  }
-}
+ 
 
 }
