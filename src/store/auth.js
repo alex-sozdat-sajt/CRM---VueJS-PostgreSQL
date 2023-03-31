@@ -201,7 +201,7 @@ async dataFromDb({dispatch, commit}){
 },
 async logout({commit}){
   console.log('LOGOUT')
-    
+
        await fetch('http://localhost:8000/deleteActiveUser', {
         method: 'DELETE',
         headers: {
@@ -210,6 +210,7 @@ async logout({commit}){
         },
         // body: JSON.stringify(id)
       }).then (commit('clearActiveUser'))
+      .then (commit('clearInfo'))
 
    
   //здесь реализовать отчистку логина и пароля в памяти
