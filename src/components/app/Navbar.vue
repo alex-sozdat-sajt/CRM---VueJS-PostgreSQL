@@ -54,6 +54,7 @@ export default {
     }
   },
   async mounted(){
+    this.userName = localStorage.getItem('ActiveUser')
     this.interval = setInterval(()=>{
       this.date = new Date()
     },100000)
@@ -62,9 +63,9 @@ export default {
       constrainWidth: true
     })
      
-    console.log('mounted this.$store.gettres.activeuser ', this.$store.getters.activeuser)               
-    this.userName = this.$store.getters.activeuser 
-    console.log('this.$store.gettres.activeuser ', this.$store.getters.activeuser)
+    console.log(' CALL mounted  this.$store.getters.activeuser', this.$store.getters.activeuser)               
+    // this.userName = this.$store.getters.activeuser 
+    console.log('this.$store.getters.activeuser', this.$store.getters.activeuser)
     // debugger
        
 

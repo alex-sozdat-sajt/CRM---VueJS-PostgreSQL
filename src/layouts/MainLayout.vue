@@ -28,16 +28,26 @@ export default {
   name: 'main-layout',
   data: () => ({
     isOpen: true,
-    loading:true
+    loading:false
   }),
   components:{
    Navbar, Sidebar
   },
+  async created(){
+    
+     await this.$store.dispatch('getActiveUser')
+     console.log('CREATED  await this.$store.dispatch getActiveUser')
+
+  },
    async mounted(){ 
-       if(!Object.keys(this.$store.getters.info).length){
-       await this.$store.dispatch('fetchInfo')
-    }
-    this.loading = false
+    //    if(!Object.keys(this.$store.getters.info).length){
+    //    await this.$store.dispatch('fetchInfo')
+    //   //  await this.$store.dispatch('getActiveUser')
+
+        
+    // }
+    // this.loading = false
+     
    },
     
   

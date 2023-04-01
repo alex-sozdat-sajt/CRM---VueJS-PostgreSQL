@@ -15,7 +15,7 @@ export default {
   },
   actions: {
     async fetchinfo({dispatch, commit}){
-        const uid = await dispatch('getUid')
+        const uid = await dispatch('getActiveUser')
     },
    
   async dataActiveUser({dispatch, commit}, user_id){
@@ -45,7 +45,7 @@ export default {
       res.on('data', (chunk) => {
         const data = JSON.parse(chunk)
         console.log('BODY: ', data[0]);
-        commit('setInfo', data)
+        commit('setInfo', data.user_id)
       });
       res.on('end', () => {
         console.log('No more data in response.');

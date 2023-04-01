@@ -64,15 +64,26 @@ http.createServer((req, res) => {
                     const data = body.join('');
                     const args = JSON.parse(data);
                     console.log('////// args///////', args)
-                    console.log('//////////////////args///////////', args.email, args.password, args.name, args.email)
-                    const sql = `INSERT INTO crmuser VALUES ('${args.password}', '${args.name}', '${args.email}', '${args.user_id}', ${args.bill})`;
-                    console.log('sql', sql)
-                    // try {
+                    console.log('//////////////////args///////////', args.email, args.password, args.name)
+                    const sql = `INSERT INTO crmuser VALUES ('${args.password}', '${args.name}', '${args.email}', '${args.user_id}', ${args.bill},'${args.expense}')`;
+										const tableName =`${args.expense}`
+										console.log('tableName', tableName)
+                    const sql_cr = `CREATE TABLE ${tableName}(expense_id serial, expense_items varchar, expense_limit int, remains int);`
+										console.log('sql', sql)
+										console.log('sql_cr', sql_cr)
+										 
                         pool.query(sql, (err, resp1) => {
                              if (err) {
                                  throw err;
                             }
                          });
+												pool.query(sql_cr, (err, resp1) => {
+														if (err) {
+																throw err;
+													 }
+												});
+
+												
                     });
             }
              datafromfront(req)
@@ -170,8 +181,19 @@ http.createServer((req, res) => {
         res.writeHead(200, { 'Content-Type': 'Content-Type' });
         res.end(req.url)
             break;
-        case "Papayas":
-          console.log("Mangoes and papayas are $2.79 a pound.");
+        case "/getActiveUser":
+          console.log('getActiveUsergetActiveUsergetActiveUsergetActiveUser')
+         
+                const sql_4 = `SELECT * FROM activeuser`;
+                console.log('sql', sql_4)
+                pool.query(sql_4, (err, resp) => {
+                    if (err) {
+                        throw err;
+                    }
+                    console.log('resp', resp)
+										res.writeHead(200, { 'Content-Type': 'Content-Type' });
+        res.end(JSON.stringify(resp.rows))
+                });
           break;
         case "Papayas":
             console.log("Mangoes and papayas are $2.79 a pound.");

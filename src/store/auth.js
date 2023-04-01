@@ -4,18 +4,14 @@ export default {
     activeuser:'' 
      
   },
-  getters: {
-    activeuser(state){
-      console.log('getters state.activeuser ', state.activeuser)
-       
-      return state.activeuser
-    }
-  },
+  
   mutations:{
     setActiveUser(state, payload){
-      state.activeuser = ''
+      // state.activeuser = 'setItem(key, value)'
+      console.log('CALL mutations setActiveUser', payload)
+      state.activeuser = localStorage.getItem('ActiveUser')
       state.activeuser = payload
-      console.log('setActiveUser', payload)
+      
       console.log('state activeuser', state.activeuser )
     },
     clearActiveUser(state){
@@ -103,13 +99,7 @@ async login({dispatch, commit}, {email, password, thi}){
 async register({dispatch}, formData){
   try{
     console.log('formData ', formData)
-    // const formData={
-    //   user_id: this.email+this.password.length+this.name,
-    //   password: this.password,
-    //   name: this.name,
-    //   email: this.email,
-
-    // };
+   
     const uid = dispatch('getUid');
     console.log('РЕГИСТРАЦИЯ', uid)
     // uid пока не возвращается
@@ -161,6 +151,20 @@ async register({dispatch}, formData){
   }
   //здесь сделать регистрацию логина и пароля в БД и создание таблицы для каждого пользователя
 
+},
+async getActiveUser({commit}){
+  console.log('CALL action getActiveUser'); 
+await fetch('http://localhost:8000/getActiveUser')
+.then((response) => {
+  return response.json();
+})
+.then((data) => {
+  console.log(' RESPONSE data action getActiveUser', data);
+  commit('setActiveUser',  data[0].user_id)
+  localStorage.setItem('ActiveUser', data[0].user_id);
+  console.log('localStorage.setItem  data[0].user_id');
+});
+ 
 },
 getUid(){
   //получение ID пользователя из БД
@@ -217,6 +221,12 @@ async logout({commit}){
 }
 
 },
- 
+getters: {
+  activeuser(state){
+    console.log('getters state.activeuser ', state.activeuser)
+     
+    return state.activeuser
+  }
+},
 
 }
