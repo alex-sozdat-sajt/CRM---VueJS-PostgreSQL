@@ -35,8 +35,8 @@ export default {
   },
   async created(){
     
-     await this.$store.dispatch('getActiveUser')
-     console.log('CREATED  await this.$store.dispatch getActiveUser')
+    //  await this.$store.dispatch('getActiveUser')
+    //  console.log('CREATED  await this.$store.dispatch getActiveUser')
 
   },
    async mounted(){ 
@@ -47,6 +47,8 @@ export default {
         
     // }
     // this.loading = false
+
+     this.$store.dispatch('reLoadFromLocalStorageDataActiveUsertoStorage')
      
    },
     

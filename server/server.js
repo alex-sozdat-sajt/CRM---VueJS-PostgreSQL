@@ -91,7 +91,6 @@ http.createServer((req, res) => {
             res.end(req.url)
           break;
         case "/setactiveuser":
-           
         let datafromfront1 = (req) => {
             const body = [];
             req.on('data', chunk => {
@@ -112,11 +111,6 @@ http.createServer((req, res) => {
         }
          datafromfront1(req)
         res.writeHead(200, { 'Content-Type': 'Content-Type' });
-        const user = {
-            name :'User 1',
-            city: 'Rome',
-            proffession: 'emperor',
-        }
         res.end(req.url)
          break;
         case "/dataActiveUser":
@@ -195,10 +189,59 @@ http.createServer((req, res) => {
         res.end(JSON.stringify(resp.rows))
                 });
           break;
-        case "Papayas":
-            console.log("Mangoes and papayas are $2.79 a pound.");
+        case "/addCategory":
+            let datafromfront4 = (req) => {
+            const body = [];
+            req.on('data', chunk => {
+                body.push(chunk);
+            }).on('end', async() => {
+                const data = body.join('');
+                const args = JSON.parse(data);
+                console.log('////// args///////', args)
+                const sql = `INSERT INTO ${args.expense} VALUES (1,'${args.title}', ${args.limit})`;
+               console.log('sql', sql)
+                // try {
+                    pool.query(sql, (err, resp1) => {
+                         if (err) {
+                             throw err;
+                        }
+                     });
+                });
+        }
+         datafromfront4(req)
+        res.writeHead(200, { 'Content-Type': 'Content-Type' });
+        res.end(req.url)
           break;
-         case "Papayas":
+         case "/fetchCategories":
+					let datafromfront5 = (req) => {
+						// const body = [];
+						// req.on('data', chunk => {
+						// 		body.push(chunk);
+						// }).on('end', async() => {
+						// 		const data = body.join('');
+						// 		const args = JSON.parse(data);
+						// 		console.log('////// args///////', args)
+						// 		console.log('//////////////////args///////////', args)
+								const sql = `SELECT * FROM alex_3_14`;
+								console.log('//////////////////sql///////////', sql)
+										pool.query(sql, (err, resp1) => {
+												 if (err) {
+														 throw err;
+												}
+												// console.log('////// args///////', args)
+												// res.writeHead(200, { 'Content-Type': 'Content-Type' });
+												res.end(JSON.stringify(resp1))
+										 });
+								// });
+				}
+				 datafromfront5(req)
+				 
+				res.end(res.url)
+          break;
+					  case "Papayas":
+                console.log("Mangoes and papayas are $2.79 a pound.");
+          break;
+					  case "Papayas":
                 console.log("Mangoes and papayas are $2.79 a pound.");
           break;
               

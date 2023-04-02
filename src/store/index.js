@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import auth from './auth'
 import router from '../router'
 import info from './info.js'
+import category from './category.js'
 
 Vue.use(Vuex)
 
@@ -30,6 +31,6 @@ async fetchCurrency(){
     error: s => s.error
   },
   modules: {
-    auth, info
+    auth, info, category
   }
 })

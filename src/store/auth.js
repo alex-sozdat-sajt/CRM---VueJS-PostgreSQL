@@ -1,11 +1,16 @@
 const http = require('http');
 export default {
   state:{
-    activeuser:'' 
-     
+    activeuser:'',
+    dataActiveUsertoStorage:{}
   },
   
   mutations:{
+    dataActiveUsertoStorage(state, dataActiveUsertoStorage){
+      console.log('dataActiveUsertoStorage', dataActiveUsertoStorage)
+      state.dataActiveUsertoStorage = dataActiveUsertoStorage
+    },
+
     setActiveUser(state, payload){
       // state.activeuser = 'setItem(key, value)'
       console.log('CALL mutations setActiveUser', payload)
@@ -25,9 +30,7 @@ async login({dispatch, commit}, {email, password, thi}){
     try{
         console.log('email ', email)
         console.log('password ', password)
-    // if(state.activeuser){
-    //   alert("Активный пользователь уже есть")
-    // }
+        localStorage.removeItem('ActiveUser')   
              const url = `http://localhost:8000/dataFromDb`;
              http.get(url, res =>{
                 
@@ -45,7 +48,7 @@ async login({dispatch, commit}, {email, password, thi}){
                 });
                 res.on('end', () => {
                 const data = JSON.parse(lines.join())['rows'];
-                console.log('data1')
+                console.log('dataFromDb', data)
                  
                 check(data)  
               })
@@ -62,6 +65,15 @@ async login({dispatch, commit}, {email, password, thi}){
                        console.log(`!!${email}!!`     ,data[i].e_mail1)
                        console.log(`ТАКОЙ емеил ${email}, есть, пароль верный Вы вошли`)
                        
+                      //  const dataActiveUser = Object.assign({name, user_id, bill}, data[i]); 
+
+                      const dataActiveUser  = data[i] 
+                      const dataActiveUsertoStorage  = {...dataActiveUser, user_password: ''};
+                      localStorage.setItem('dataActiveUsertoStorage', JSON.stringify(dataActiveUsertoStorage)) 
+                      await commit('dataActiveUsertoStorage', dataActiveUsertoStorage)
+                       
+                      console.log('dataActiveUser', dataActiveUser)
+                      console.log('dataActiveUsertoStrage', dataActiveUsertoStorage)
                       const aciveUser={
                         user_id: data[i].user_id,
                         user_status:'active'
@@ -205,7 +217,7 @@ async dataFromDb({dispatch, commit}){
 },
 async logout({commit}){
   console.log('LOGOUT')
-
+      localStorage.removeItem('ActiveUser')
        await fetch('http://localhost:8000/deleteActiveUser', {
         method: 'DELETE',
         headers: {
@@ -226,6 +238,11 @@ getters: {
     console.log('getters state.activeuser ', state.activeuser)
      
     return state.activeuser
+  },
+  dataActiveUsertoStorage(state){
+    console.log('getters dataActiveUsertoStorage ', state.dataActiveUsertoStorage)
+     
+    return state.dataActiveUsertoStorage
   }
 },
 

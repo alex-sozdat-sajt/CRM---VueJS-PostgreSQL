@@ -5,13 +5,19 @@ export default {
   },
   mutations:{
     setInfo(state, info){
-      state.info = info[0]
-      console.log('setInfo',  state.info)
+      state.info = info
+       
+      console.log('setInfo',  info)
     },
     clearInfo(state){
       state.info={}
       console.log('clearInfo', state.info)
-    }
+    },
+    reLoadFromLocalStorageDataActiveUsertoStorage(state, data){
+      console.log('reLoadFromLocalStorageDataActiveUsertoStorageState', data)
+      state.dataActiveUsertoStorage = data
+     }
+
   },
   actions: {
     async fetchinfo({dispatch, commit}){
@@ -35,6 +41,7 @@ export default {
         'Content-Type': 'application/json',
         'Content-Length': Buffer.byteLength(postData),
       },
+       
     };
     
     const req = http.request('http://localhost:8000/dataActiveUser', (res) => {
@@ -63,8 +70,12 @@ export default {
   catch(e){
 
   }
+  },
+  reLoadFromLocalStorageDataActiveUsertoStorage({commit}){
+    const reLoadFromLocalStorageDataActiveUsertoStorage = JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))
+    console.log('reLoadFromLocalStorageDataActiveUsertoStorage', reLoadFromLocalStorageDataActiveUsertoStorage)
+  commit('reLoadFromLocalStorageDataActiveUsertoStorage', reLoadFromLocalStorageDataActiveUsertoStorage) 
   }
-
 
      
   },
@@ -72,6 +83,10 @@ export default {
     // info: s=>s.info
     info(state){
       return state.info
+    },
+    reLoadFromLocalStorageDataActiveUsertoStorage(state){
+      console.log(' state.reLoadFromLocalStorageDataActiveUsertoStorage',  state.dataActiveUsertoStorage)
+      return state.dataActiveUsertoStorage
     }
      
   }

@@ -61,27 +61,25 @@ export default {
     },
     methods:{
       async submitHandler(){
-        console.log(this.$v.limit)
-        if(this.$v.$invalid){
-          this.$v.$touch()
-          return 
+      
+        // console.log(this.$v.limit)
+        // if(this.$v.$invalid){
+        //   this.$v.$touch()
+        //   return 
+        // }
+        const category = {
+          title: this.title,
+          limit: this.limit
         }
         try{
-           console.log('userCategoriItem')
-            const user_id = await this.$store.getters.activeuser
-           console.log('userCategoriItem', user_id )
-        //    console.log(' getters.activeuser', user_id)
-        //    await this.$store.dispatch('createCategory', {
-        //      userCategoriItem:{
-        //       user_id: user_id,  
-        //       title: this.title,
-        //       limit: this.limit
-        //     }
-         
-        // })
+          // console.log('this.$store.getters.info',   this.$store.getters.info)
+           console.log('createCategory', category)
+            this.$store.dispatch('createCategory',category)
+           this.$emit('created', category)
+           
             
         } catch (e){}
-              }
+      }
     }
      
 }
