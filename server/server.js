@@ -213,30 +213,42 @@ http.createServer((req, res) => {
         res.end(req.url)
           break;
          case "/fetchCategories":
-					let datafromfront5 = (req) => {
-						// const body = [];
-						// req.on('data', chunk => {
-						// 		body.push(chunk);
-						// }).on('end', async() => {
-						// 		const data = body.join('');
-						// 		const args = JSON.parse(data);
-						// 		console.log('////// args///////', args)
-						// 		console.log('//////////////////args///////////', args)
-								const sql = `SELECT * FROM alex_3_14`;
-								console.log('//////////////////sql///////////', sql)
-										pool.query(sql, (err, resp1) => {
-												 if (err) {
-														 throw err;
-												}
-												// console.log('////// args///////', args)
-												// res.writeHead(200, { 'Content-Type': 'Content-Type' });
-												res.end(JSON.stringify(resp1))
-										 });
-								// });
-				}
-				 datafromfront5(req)
-				 
-				res.end(res.url)
+					console.log('!!!!!!!req 1!!!!!!!!!!!');
+					datafromfront5(req)
+					function datafromfront5 (req){
+						console.log('!!!!!!!req 2!!!!!!!!!!!')
+						const body = [];
+            req.on('data', chunk => {
+                body.push(chunk);
+            		}).on('end', async() => {
+                const data = body.join('');
+                const args = JSON.parse(data);
+                console.log('////// args 1///////', args)
+								const sql_fc = `SELECT * FROM alex_3_14`;
+								try {pool.query(sql_fc, (err, resp) => {
+									if (err) {
+											throw err;
+									}
+								console.log('!!!!!!!response from DB!!!!!!!!!!!', resp)
+								// res.end(JSON.stringify(resp))
+										})}
+								catch(e){} 		
+								 
+                });
+								 
+								// const sql = `INSERT INTO ${args.expense} VALUES (1,'${args.title}', ${args.limit})`;
+								// console.log('sql', sql)
+									
+							// 	const sql_fc = `SELECT * FROM alex_3_14`;
+							// 	pool.query(sql_fc, (err, resp) => {
+							// 	if (err) {
+							// 			throw err;
+							// 	}
+							// console.log('!!!!!!!response from DB!!!!!!!!!!!', resp)
+							// res.end(JSON.stringify(resp))
+					// });
+					 }
+					  res.end(req.url)
           break;
 					  case "Papayas":
                 console.log("Mangoes and papayas are $2.79 a pound.");
