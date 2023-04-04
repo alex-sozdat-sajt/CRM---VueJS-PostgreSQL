@@ -9,19 +9,22 @@ export default {
     actions:{
 			async fetchCategories({commit, dispatch}){																					  
 			  
-				const expenseTable = (localStorage.getItem('dataActiveUsertoStorage'))
-				// ['expense'].toLowerCase()  
+				const nameofexpenseTable = JSON.parse((localStorage.getItem('dataActiveUsertoStorage')))['expense'].toLowerCase()  
 				 
-				console.log('actions expenseTable', expenseTable)
-				
-				await fetch('http://localhost:8000/fetchCategories', {
+				console.log('actions expenseTable', nameofexpenseTable)
+				 
+				 
+				const reqfromdb = await fetch('http://localhost:8000/fetchCategories', {
          method: 'POST',
          headers: {
            'Content-Type': 'application/json;charset=utf-8'
         },
-        body: 'alex_3_14'
-      })
-        .then(console.log('Данные получены'))
+        body: JSON.stringify(nameofexpenseTable)  
+  
+      })  .then((response) => {console.log(response.body)});
+	  	
+
+	  			console.log('actions expenseTable', reqfromdb)
 			},
         async createCategory({store, commit, dispatch}, category){
 					try {

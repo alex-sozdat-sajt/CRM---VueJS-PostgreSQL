@@ -213,28 +213,76 @@ http.createServer((req, res) => {
         res.end(req.url)
           break;
          case "/fetchCategories":
-					console.log('!!!!!!!req 1!!!!!!!!!!!');
-					datafromfront5(req)
-					function datafromfront5 (req){
-						console.log('!!!!!!!req 2!!!!!!!!!!!')
-						const body = [];
-            req.on('data', chunk => {
-                body.push(chunk);
-            		}).on('end', async() => {
-                const data = body.join('');
-                const args = JSON.parse(data);
-                console.log('////// args 1///////', args)
-								const sql_fc = `SELECT * FROM alex_3_14`;
-								try {pool.query(sql_fc, (err, resp) => {
-									if (err) {
-											throw err;
-									}
-								console.log('!!!!!!!response from DB!!!!!!!!!!!', resp)
-								// res.end(JSON.stringify(resp))
-										})}
-								catch(e){} 		
-								 
-                });
+								console.log('!!!!!!!req 2!!!!!!!!!!!')
+									const body = [];
+									const args = '';
+									let data = "";
+									req.on("data", chunk => {
+											data += chunk;
+									});
+									req.on("end", () => {
+										console.log('datadata', data);
+										const sql_fc ='SELECT * FROM '+`${nameofexpenseTable}`
+										console.log('sql_fc', sql_fc);
+											pool.query(sql_fc, (err, resp) => {
+											if (err) {
+													throw err;
+											}
+										console.log('!!!!!!!response from DB!!!!!!!!!!!', resp)
+										// res.end(JSON.stringify(resp))
+											console.log(data);
+											res.write(JSON.stringify(resp));
+											res.end("Данные успешно получены");
+										})
+											 
+									});
+
+
+									  // req.on('data', chunk => {
+										// 	body.push(chunk);
+										// 	}).on('end', async() => {
+										// 				 	try {
+										// 							const data = body.join('');
+										// 							const args = JSON.parse(data);
+										// 							console.log('parsedData 1', args);
+										// 							// global.letdata = args
+										// 							// printdata(args)
+										// 							// res.write("<html>");
+										// 					} catch (e) {
+										// 							console.error(e.message);
+										// 						}
+										// 						console.log('parsedData 2', args) 
+										// 					})
+										// 					console.log('parsedData 3', args) 
+															   
+																//  res.write("<html>");
+																
+																 
+																// res.write(JSON.stringify(args));
+																// res.write("<html>");
+																// res.end('ok');
+															 
+											  	 
+														 
+               
+                    // console.log('!!!!!!!response from DB 3!!!!!!!!!!!', global.letdata)
+										// console.log('	global.letdata = args', 	global.letdata);
+										// const dataFromfunction = function printdata (data){
+											// console.log('printdata', data);
+										// return 
+										// }
+										// console.log('dataFromfunction', dataFromfunction);
+                    // res.end('Response', JSON.stringify(dataFromfunction))
+                        // const sql_fc = `SELECT * FROM alex_3_14`;
+				// 				try {pool.query(sql_fc, (err, resp) => {
+				// 					if (err) {
+				// 							throw err;
+				// 					}
+                //                     global.letdata = resp
+				// 				console.log('!!!!!!!response from DB 2!!!!!!!!!!!', global.letdata)
+				// 				// res.end(JSON.stringify(resp))
+				// 						})}
+				// 				catch(e){} 		
 								 
 								// const sql = `INSERT INTO ${args.expense} VALUES (1,'${args.title}', ${args.limit})`;
 								// console.log('sql', sql)
@@ -247,8 +295,9 @@ http.createServer((req, res) => {
 							// console.log('!!!!!!!response from DB!!!!!!!!!!!', resp)
 							// res.end(JSON.stringify(resp))
 					// });
-					 }
-					  res.end(req.url)
+					// }
+            //          console.log('!!!!!!!response from DB 3!!!!!!!!!!!', global.letdata)
+					  // res.end('Response', JSON.stringify(global.letdata))
           break;
 					  case "Papayas":
                 console.log("Mangoes and papayas are $2.79 a pound.");
