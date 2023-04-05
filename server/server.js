@@ -38,14 +38,13 @@ const serveFile = name => {
 };
 
 http.createServer((req, res) => {
-  
     const { url } = req;
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type', '*');
-    
     switch (url) {
         case "/dataFromDb":
+					console.log('!!!!!!!req 0 !!!!!!!!!!!')
             const sql = `SELECT * FROM crmuser`;
             pool.query(sql, (err, resp) => {
                 if (err) {
@@ -56,6 +55,7 @@ http.createServer((req, res) => {
             });
           break;
         case "/crmadduser":
+					console.log('!!!!!!!req 2 !!!!!!!!!!!')
             let datafromfront = (req) => {
                 const body = [];
                 req.on('data', chunk => {
@@ -91,6 +91,7 @@ http.createServer((req, res) => {
             res.end(req.url)
           break;
         case "/setactiveuser":
+					console.log('////// setactiveuser///////')
         let datafromfront1 = (req) => {
             const body = [];
             req.on('data', chunk => {
@@ -117,25 +118,7 @@ http.createServer((req, res) => {
             console.log('dataActiveUserdataActiveUserdataActiveUserdataActiveUser')
         
                 let datafromfront2 = function(req){
-                    // const body = [];
-                    // req.on('data', chunk => {
-                    //     body.push(chunk);
-                    // }).on('end', async() => {
-                    //     const data = body.join('');
-                    //     const args = JSON.parse(data);
-                    //     console.log('////// args///////', args)
-                    //     const sql = `SELECT * FROM crmuser WHERE user_id = ('${args}')`;
-                    //     console.log('sql', sql)
-                    //         pool.query(sql, (err, resp1) => {
-                    //              if (err) {
-                    //                  throw err;
-                    //             }
-                    //             console.log('resp1', resp1)  
-                    //             // res.end(resp1) 
-                    //             const dataActiveUser_resp = resp1
-                    //             return resp1
-                    //          });
-                    //     });
+                    
                      const sql = `SELECT * FROM crmuser WHERE user_id = '1@mail.ru3sdf'`;
                      console.log('sql.', sql)  
                       
@@ -154,9 +137,7 @@ http.createServer((req, res) => {
                      return  
                 }
                  datafromfront2(req)
-                // res.writeHead(200, { 'Content-Type': 'Content-Type' });
-                // console.log('datafromfront', datafromfront) 
-                // res.end(datafromfront2(req))
+             
           break;
         case "/deleteActiveUser":
             console.log('deleteActiveUserdeleteActiveUserdeleteActiveUserdeleteActiveUser')
@@ -213,92 +194,39 @@ http.createServer((req, res) => {
         res.end(req.url)
           break;
          case "/fetchCategories":
-								console.log('!!!!!!!req 2!!!!!!!!!!!')
-									const body = [];
-									const args = '';
-									let data = "";
-									req.on("data", chunk => {
-											data += chunk;
-									});
-									req.on("end", () => {
-										console.log('datadata', data);
-										const sql_fc ='SELECT * FROM '+`${nameofexpenseTable}`
-										console.log('sql_fc', sql_fc);
-											pool.query(sql_fc, (err, resp) => {
-											if (err) {
-													throw err;
-											}
-										console.log('!!!!!!!response from DB!!!!!!!!!!!', resp)
-										// res.end(JSON.stringify(resp))
-											console.log(data);
-											res.write(JSON.stringify(resp));
-											res.end("Данные успешно получены");
-										})
-											 
-									});
-
-
-									  // req.on('data', chunk => {
-										// 	body.push(chunk);
-										// 	}).on('end', async() => {
-										// 				 	try {
-										// 							const data = body.join('');
-										// 							const args = JSON.parse(data);
-										// 							console.log('parsedData 1', args);
-										// 							// global.letdata = args
-										// 							// printdata(args)
-										// 							// res.write("<html>");
-										// 					} catch (e) {
-										// 							console.error(e.message);
-										// 						}
-										// 						console.log('parsedData 2', args) 
-										// 					})
-										// 					console.log('parsedData 3', args) 
-															   
-																//  res.write("<html>");
-																
-																 
-																// res.write(JSON.stringify(args));
-																// res.write("<html>");
-																// res.end('ok');
-															 
-											  	 
-														 
-               
-                    // console.log('!!!!!!!response from DB 3!!!!!!!!!!!', global.letdata)
-										// console.log('	global.letdata = args', 	global.letdata);
-										// const dataFromfunction = function printdata (data){
-											// console.log('printdata', data);
-										// return 
-										// }
-										// console.log('dataFromfunction', dataFromfunction);
-                    // res.end('Response', JSON.stringify(dataFromfunction))
-                        // const sql_fc = `SELECT * FROM alex_3_14`;
-				// 				try {pool.query(sql_fc, (err, resp) => {
-				// 					if (err) {
-				// 							throw err;
-				// 					}
-                //                     global.letdata = resp
-				// 				console.log('!!!!!!!response from DB 2!!!!!!!!!!!', global.letdata)
-				// 				// res.end(JSON.stringify(resp))
-				// 						})}
-				// 				catch(e){} 		
-								 
-								// const sql = `INSERT INTO ${args.expense} VALUES (1,'${args.title}', ${args.limit})`;
-								// console.log('sql', sql)
-									
-							// 	const sql_fc = `SELECT * FROM alex_3_14`;
-							// 	pool.query(sql_fc, (err, resp) => {
-							// 	if (err) {
-							// 			throw err;
-							// 	}
-							// console.log('!!!!!!!response from DB!!!!!!!!!!!', resp)
-							// res.end(JSON.stringify(resp))
-					// });
-					// }
-            //          console.log('!!!!!!!response from DB 3!!!!!!!!!!!', global.letdata)
-					  // res.end('Response', JSON.stringify(global.letdata))
-          break;
+            // datafromfront5(req) 
+			 		function datafromfront5(req){
+						console.log('//////  0 ///////')	
+            const body = [];
+         
+            req.on('data', chunk => {
+							console.log('////// 1 ///////')	
+                body.push(chunk);
+            }).on('end', async() => {
+							console.log('////// 2 ///////')	
+                const data = body.join('');
+                const args = JSON.parse(data);
+                console.log('////// args///////', args)
+								const sql = 'SELECT * FROM ' +`${args}`
+                console.log('sql', sql)
+								console.log('////// 3 ///////')	
+                   try{  pool.query(sql, (err, resp1) => {
+                         if (err) { throw err;}
+													console.log('resp1', resp1)	
+                                            // global.resp1=resp1;
+                                            res.write(JSON.stringify(resp1))
+                                            // funcresend(resp1)
+                      })
+										}catch(err){console.log('ERROR', err)	} 
+                });
+         }
+          
+			console.log('////// 4 ///////')
+            //  function funcresend(resp1){res.end(JSON.stringify(resp1))}
+            // setTimeout(res.end(JSON.stringify(global.resp1)), 10000);
+        // res.end(JSON.stringify(resp1))
+         break;
+				 
 					  case "Papayas":
                 console.log("Mangoes and papayas are $2.79 a pound.");
           break;
@@ -308,248 +236,7 @@ http.createServer((req, res) => {
               
         default:
           console.log(`Sorry, we are out of.`);
-      }
-
-      
-   
-    // if (url == '/dataFromDb') {
-
-    //     const sql = `SELECT * FROM crmuser`;
-    //     pool.query(sql, (err, resp) => {
-    //         if (err) {
-    //             throw err;
-    //         }
-    //         //запись в файл ответа сервера;
-    //         console.log('!!!!!!!response from DB!!!!!!!!!!!', resp)
-    //         res.end(JSON.stringify(resp))
-    //     });
-
-    // }else if (url == '/crmadduser') {
-       
-        
-        // let datafromfront = (req) => {
-        //     const body = [];
-        //     req.on('data', chunk => {
-        //         body.push(chunk);
-        //     }).on('end', async() => {
-        //         const data = body.join('');
-        //         const args = JSON.parse(data);
-        //         console.log('////// args///////', args)
-        //         console.log('//////////////////args///////////', args.email, args.password, args.name, args.email)
-        //         const sql = `INSERT INTO crmuser VALUES ('${args.password}', '${args.name}', '${args.email}', '${args.user_id}', ${args.bill})`;
-        //         console.log('sql', sql)
-        //         // try {
-        //             pool.query(sql, (err, resp1) => {
-        //                  if (err) {
-        //                      throw err;
-        //                 }
-        //              });
-        //         });
-        // }
-        //  datafromfront(req)
-        // res.writeHead(200, { 'Content-Type': 'Content-Type' });
-        // res.end(req.url)
-
-    // }else if (url == '/setactiveuser') {
-    //     let datafromfront = (req) => {
-    //         const body = [];
-    //         req.on('data', chunk => {
-    //             body.push(chunk);
-    //         }).on('end', async() => {
-    //             const data = body.join('');
-    //             const args = JSON.parse(data);
-    //             console.log('////// args///////', args)
-    //             const sql = `INSERT INTO activeuser VALUES ('${args.user_id}', '${args.user_status}')`;
-    //             console.log('sql', sql)
-    //              try {
-    //                 pool.query(sql, (err, resp1) => {
-    //                      if (err) {
-    //                          throw err;
-    //                     }
-    //                  });
-    //             });
-    //     }
-    //      datafromfront(req)
-    //     res.writeHead(200, { 'Content-Type': 'Content-Type' });
-    //     res.end(req.url)
-
-    // }else if (url == '/dataActiveUser') {
-    //     console.log('dataActiveUserdataActiveUserdataActiveUserdataActiveUser')
-        
-    //     let datafromfront = function(req){
-            // const body = [];
-            // req.on('data', chunk => {
-            //     body.push(chunk);
-            // }).on('end', async() => {
-            //     const data = body.join('');
-            //     const args = JSON.parse(data);
-            //     console.log('////// args///////', args)
-            //     const sql = `SELECT * FROM crmuser WHERE user_id = ('${args}')`;
-            //     console.log('sql', sql)
-            //         pool.query(sql, (err, resp1) => {
-            //              if (err) {
-            //                  throw err;
-            //             }
-            //             console.log('resp1', resp1)  
-            //             // res.end(resp1) 
-            //             const dataActiveUser_resp = resp1
-            //             return resp1
-            //          });
-            //     });
-    //          const sql = `SELECT * FROM crmuser WHERE user_id = '1@mail.ru3sdf'`;
-    //          console.log('sql.', sql)  
-              
-    //          console.log('req.body',req.body)  
-    //         pool.query(sql, (err, resp1) => {
-    //              if (err) {
-    //                   throw err;
-    //              }
-    //         console.log('resp1', resp1)  
-    //         // res.end(resp1) 
-    //         //  const dataActiveUser_resp = resp1
-    //             return resp1
-    //          });
-    //          return  
-    //     }
-         
-    //     // res.writeHead(200, { 'Content-Type': 'Content-Type' });
-    //     // console.log('datafromfront', datafromfront) 
-    //     res.end(datafromfront(req))
-    // }
-    //  else if (url == '/todoPost') {
-    //     console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    //     let datafromfront = (req) => {
-           
-    //         const body = [];
-    //         req.on('data', chunk => {
-    //             body.push(chunk);
-    //         }).on('end', async() => {
-    //             const data = body.join('');
-    //             const args = JSON.parse(data);
-    //             console.log('//////////////////args///////////', args.id, args.name, args.surname, args.date, args.completed)
-
-    //             const sql = `INSERT INTO todo VALUES (${args.id}, '${args.name}', '${args.surname}', '${args.date}', '${args.completed}', '${args.url}')`;
-               
-    //             console.log('sql', sql)
-    //             pool.query(sql, (err, resp2) => {
-    //                 if (err) {
-    //                     throw err;
-    //                 }
-    //                 //запись в файл ответа сервера;
-
-    //                 console.log('resp2', resp2)
-    //                     // res.end(JSON.stringify(resp))
-    //             });
-    //             const sql_1 = `SELECT todo_line, todo_person, todo_date FROM todo`;
-    //             pool.query(sql_1, (err2, resp2) => {
-    //                 if (err2) {
-    //                     throw err2;
-    //                 }
-    //                 //запись в файл ответа сервера;
-
-    //                 console.log('resp2', resp2)
-    //                 res.end(JSON.stringify(resp2))
-    //             });
-
-
-    //         })
-
-
-           
-    //     }
-    //     datafromfront(req)
-
-    //     res.writeHead(200, { 'Content-Type': 'Content-Type' });
-    //     res.end(req.url)
-           
-    // } else if (url == '/todoDeletByID') {
-    //     console.log('/url', url)
-    //     let datafromfront = (req) => {
-    //         const body = [];
-    //         console.log('body', body)
-    //         req.on('data', chunk => {
-    //             body.push(chunk);
-    //             console.log('body', body)
-    //         }).on('end', async() => {
-    //             const data = body.join('');
-    //             const args = JSON.parse(data);
-    //             console.log('args', args.id)
-
-    //             const sql = `DELETE FROM todo WHERE todo_id=${args.id}`;
-
-    //             console.log('sql', sql)
-    //             pool.query(sql, (err, resp) => {
-    //                 if (err) {
-    //                     throw err;
-    //                 }
-    //                 console.log('resp', resp)
-    //                     // res.end(JSON.stringify(resp))
-    //             });
-
-    //         })
-    //     }
-    //     datafromfront(req)
-    //     res.writeHead(200, { 'Content-Type': 'Content-Type' });
-    //     res.end(req.url)
-    // } else if (url == '/todoDeletAll') {
-    //     let datafromfront = (req) => {
-    //             const sql = `DELETE FROM crmuser`;
-    //             console.log('sql', sql)
-    //             pool.query(sql, (err, resp) => {
-    //                 if (err) {
-    //                     throw err;
-    //                 }
-    //                 console.log('resp', resp)
-    //                     // res.end(JSON.stringify(resp))
-    //             });
-    //     }
-    //     datafromfront(req)
-    //     res.writeHead(200, { 'Content-Type': 'Content-Type' });
-    //     res.end(req.url)
-    // }else if (url == '/todoDeletAll') {
-    //     let datafromfront = (req) => {
-    //             const sql = `DELETE FROM crmuser`;
-    //             console.log('sql', sql)
-    //             pool.query(sql, (err, resp) => {
-    //                 if (err) {
-    //                     throw err;
-    //                 }
-    //                 console.log('resp', resp)
-    //                     // res.end(JSON.stringify(resp))
-    //             });
-    //     }
-    //     datafromfront(req)
-    //     res.writeHead(200, { 'Content-Type': 'Content-Type' });
-    //     res.end(req.url)
-    // }else if (url == '/deleteActiveUser') {
-    //     console.log('deleteActiveUserdeleteActiveUserdeleteActiveUserdeleteActiveUser')
-    //     let datafromfront = (req) => {
-    //             const sql = `DELETE FROM activeuser`;
-    //             console.log('sql', sql)
-    //             pool.query(sql, (err, resp) => {
-    //                 if (err) {
-    //                     throw err;
-    //                 }
-    //                 console.log('resp', resp)
-    //                     // res.end(JSON.stringify(resp))
-    //             });
-    //     }
-    //     datafromfront(req)
-    //     res.writeHead(200, { 'Content-Type': 'Content-Type' });
-    //     res.end(req.url)
-    // }else {
-    //     const { url } = req;
-    //     const name = url === '/' ? '/index.html' : url;
-    //     // console.log('name - ', name)
-
-    //     const fileExt = path.extname(name).substring(1);
-    //     // console.log('fileExt - ', fileExt)
-    //     const mimeType = MIME_TYPES[fileExt] || MIME_TYPES.html;
-    //     // console.log('mimeType - ', mimeType)
-    //     res.writeHead(200, { 'Content-Type': mimeType });
-    //     const stream = serveFile(name);
-    //     if (stream) stream.pipe(res);
-
-    // }
-
+	}
+	console.log('////// 5 ///////')
+    res.end(datafromfront5(req))
 }).listen(8000, () => console.log('Server started on port 8000'));

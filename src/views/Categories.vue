@@ -9,6 +9,8 @@
         
         <CategoryCreate @created="addNewCaterory" />
         <CategoryEdit />
+        <a v-on:click="sendreq"
+        class="waves-effect waves-light btn">button</a>
       </div>
     </section>
   </div>
@@ -27,7 +29,7 @@ export default {
   }),
   async mounted(){
      console.log('mounted fetchCategories', )
-    this.categories = await this.$store.dispatch('fetchCategories')
+    // this.categories = await this.$store.dispatch('fetchCategories')
     this.loading = false
     console.log('mounted fetchCategories', )
 
@@ -41,7 +43,12 @@ export default {
     addNewCaterory(category){
       this.categories.push(category)
       console.log(this.categories[0])
-    }
+    },
+    sendreq(){
+      alert('Привет')
+      this.categories =  this.$store.dispatch('fetchCategories')
+    },
+    
   }
   
 }
