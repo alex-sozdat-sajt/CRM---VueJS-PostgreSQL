@@ -1,30 +1,35 @@
- const db = require('./db.js')
- const pg = db.open({
-     host: '127.0.0.1',
-     port: 5432,
-     user: 'postgres',
-     password: 'belakt1',
-     database: 'application'
- });
- // синтаксис через кваери билдер
- console.dir({ pg });
- //24 курсор у которого реализован метод зен
- // можно из курсора возвращать промис 
- //этот курсор можно присв в перем и передать или скланировать
- //эти операторы строят массив аргументов к ескюелю
- pg.select('pg_tables')
-     .where({ tableowner: 'postgres', schemaname: 'public' })
-     .fields(['schemaname', 'tablename', 'tableowner'])
-     .then(rows => {
-         console.table(rows);
-         pg.close();
-     });
- //  pg.select('pg_tables')
- //      .where({ tablename: 'systemuser' })
- //.value()
- //.row()
- //  .col('tablename')
- //  .then(array => {
- //      console.table(rows);
- //      pg.close();
- //  })
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const app = express();
+const port = 8000;
+const db = require("./queries");
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
+
+app.get("/", (request, response) => {
+  response.json({ info: "Node.js, Express, and Postgres API" });
+});
+
+app.get("/users", db.getUsers);
+app.get("/users/:id", db.getUserById);
+app.post("/users", db.createUser);
+app.put("/users/:id", db.updateUser);
+app.delete("/users/:id", db.deleteUser);
+
+app.get("/dataFromDb", db.dataFromDb);
+app.post("/crmadduser", db.addUser);
+app.post("/setactiveuser", db.setActiveUser);
+app.post("/dataActiveUser", db.dataActiveUser);
+app.get("/deleteActiveUser", db.deleteActiveUser);
+app.get("/getActiveUser", db.getActiveUser);
+app.post("/addCategory", db.addCategory);
+app.post("/fetchCategories", db.fetchCategories);
+
+
+
+app.listen(port, () => {
+  console.log(`App running on port ${port}`);
+});

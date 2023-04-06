@@ -30,10 +30,10 @@ async login({dispatch, commit}, {email, password, thi}){
     try{
         console.log('email ', email)
         console.log('password ', password)
+        // debugger
         localStorage.removeItem('ActiveUser')   
              const url = `http://localhost:8000/dataFromDb`;
              http.get(url, res =>{
-                
               console.log('res.headers', res.headers);
               if (res.statusCode != 200){
                 const {statusCode, statusMessage} = res;
@@ -44,8 +44,9 @@ async login({dispatch, commit}, {email, password, thi}){
               const lines = [];
               res.on('data', chunk => {
                 lines.push(chunk);
-                 
-                });
+                console.log('lines', lines)
+              });
+
                 res.on('end', () => {
                 const data = JSON.parse(lines.join())['rows'];
                 console.log('dataFromDb', data)
@@ -217,9 +218,10 @@ async dataFromDb({dispatch, commit}){
 },
 async logout({commit}){
   console.log('LOGOUT')
-      localStorage.removeItem('ActiveUser')
+       localStorage.removeItem('dataActiveUsertoStorage');
+       localStorage.removeItem('categoriesActiveUser');
        await fetch('http://localhost:8000/deleteActiveUser', {
-        method: 'DELETE',
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json;charset=utf-8',
           // 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, DELETE'
