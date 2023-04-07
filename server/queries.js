@@ -129,6 +129,25 @@ const setActiveUser = (request, response) => {
       }
     );
   };
+   /**** my  updateCategory    results.insertId*/
+   const updateCategory = (request, response) => {
+    console.log('!!!!!!!!!!!!!!!!!updateCategory!!!!!!!!!!!!!!!!!!!');
+       
+    const {expense_idf,  expense_itemsf, expense_limitf, expense_user_tablef} = request.body;
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!", expense_idf,  expense_itemsf, expense_limitf, expense_user_tablef);
+    
+   
+    console.log(`UPDATE ${expense_user_tablef} SET expense_items = ${expense_itemsf} WHERE expense_id = ${expense_idf}`)
+    pool.query(
+      `UPDATE ${expense_user_tablef} SET expense_items = $1, expense_limit = $2  WHERE expense_id = $3`, [expense_itemsf, expense_limitf, expense_idf], (error, results) => {
+        if (error) {
+          throw error;
+        }
+        response.status(201).send('Категория обновлена')
+        console.log(results);
+      }
+    );
+  };
   /**** my  fetchCategories    results.insertId*/
   const fetchCategories = (request, response) => {
     console.log('fetchCategoriesfetchCategoriesfetchCategoriesfetchCategoriesfetchCategoriesfetchCategoriesfetchCategoriesfetchCategories'); 
@@ -230,6 +249,7 @@ module.exports = {
   deleteActiveUser,
   getActiveUser,
   addCategory,
+  updateCategory,
   fetchCategories,
 };
  

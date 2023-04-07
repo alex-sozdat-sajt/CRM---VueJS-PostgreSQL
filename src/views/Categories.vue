@@ -9,8 +9,12 @@
         
         <CategoryCreate @created="addNewCaterory" />
         <CategoryEdit
+        v-if="categories.length"
         :categories="categories"
+        :key="categories.length + updateCount"
+        @updated="updateCategories"
          />
+         <p v-else class="center">Категорий пока нет</p>
         <a v-on:click="sendreq"
         class="waves-effect waves-light btn">fetchCategories</a>
          <a v-on:click="dataFromDb"
@@ -23,15 +27,17 @@
 <script>
 import CategoryCreate from '@/components/CategoryCreate'
 import CategoryEdit from '@/components/CategoryEdit'
-// import Loader from '../components/app/Loader.vue'
+import Loader from '../components/app/Loader.vue'
 
 export default {
   name: 'categories',
   data: () => ({
     categories:[],
-    loading: false
+    loading: false,
+    updateCount: 0
   }),
   async mounted(){
+
     console.log('mounted fetchCategories', )
     await this.$store.dispatch('fetchCategories')
     this.loading = false
@@ -41,13 +47,20 @@ export default {
   },
   components:{
     CategoryCreate, CategoryEdit, 
-    // Loader
+     Loader
      
   },
   methods: {
     addNewCaterory(category){
       this.categories.push(category)
       console.log(this.categories[0])
+    },
+    updateCategories(category){
+      const idx = this.categories.findIndex(c =>c.id = category.id)
+      this.categories[idx].title = category.title
+      this.categories[idx].limit = category.limit
+      this.updateCount++
+       
     },
     sendreq(){
       

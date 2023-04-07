@@ -5,7 +5,7 @@
               <h4>Редактировать</h4>
             </div>
 
-            <form>
+            <form @submit.prevent="submitHandler">
               <div class="input-field" >
                 <select v-model='current'
                 ref="select">
@@ -54,34 +54,72 @@ export default {
     current: null,
     title:'',
     limit: 10,
+    id:'',
     select: null,
     categories: JSON.parse(localStorage.getItem('categoriesActiveUser')),
-    // categories:[{'id':1, 'title': 'привет 1' },
-    //               {'id':2, 'title': 'привет 2' },
-    //               {'id':3, 'title': 'привет 3' },]
   }),
   watch:{
     current(value){
-      const{expense_items, expense_limit} = this.categories.find(c => c.expense_items === value)
-      console.log('current(value)', value)
-       
-        this.title = expense_items
-        this.limit = expense_limit
+      console.log('this.categories', this.categories)
+        console.log('this.categories.expense_items', this.categories[0]['expense_items'])
+      console.log('this.categories value', value)
+      for(let i=0;i<this.categories.length; i++){
+          if(this.categories[i]['expense_items'] === value){
+             this.title = this.categories[i]['expense_items']
+             this.limit = this.categories[i]['expense_limit']
+         }
+      }
 
-      
+      // const{expense_items, expense_limit} = this.categories.find(c => c.expense_items === value)
+      // console.log('current(value)', value)
+      //   this.title = expense_items
+      //   this.limit = expense_limit
     }
   },
   created(){
-    const {expense_id, expense_items, expense_limit} = this.categories[0]
-    console.log('expense_id, expense_items, expense_limit', expense_id, expense_items, expense_limit)
-    this.current = expense_id
-    this.title = expense_items
-    this.limit = expense_limit
     
-    
+    this.categories = JSON.parse(localStorage.getItem('categoriesActiveUser'))
+    this.current = this.categories[0]['expense_items']
+    this.id = this.categories[0]['expense_id']
+    this.title = this.categories[0]['expense_items']
+    this.limit = this.categories[0]['expense_limit']
+  },
+  methods:{
+    updatethiscategoriesfromLS(){
+    console.log('!!!!!!!!!!updatethiscategoriesfromLS!!!!!!!!!!!!!!!!!!')
+    this.categories = JSON.parse(localStorage.getItem('categoriesActiveUser'))
+    this.current = this.categories[0]['expense_items']
+    this.id = this.categories[0]['expense_id']
+    this.title = this.categories[0]['expense_items']
+    this.limit = this.categories[0]['expense_limit']
+    },
+    async submitHandler(){
+      
+      // if(this.$v.$invalid){
+      //   this.$v.$touch()
+      //   return
+      // }
+      try {
+        console.log('categoryData')
+       const categoryData = {
+         expense_idf: this.id,
+         expense_itemsf: this.title,
+         expense_limitf: this.limit,
+         expense_user_tablef: JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['expense'].toLowerCase()
+        }
+         console.log('categoryData', categoryData.expense_user_tablef)
+         console.log('this.categories', this.categories[1]['expense_id'])
 
+                                    
+        await this.$store.dispatch('updateCategory', categoryData)
+        this.updatethiscategoriesfromLS()
+        this.$emit('updated', categoryData)
+      
+      }catch(e){}
+    }
   },
   mounted(){
+   console.log('this.categories LLL', M.FormSelect.init(this.$refs.select))
     this.select = M.FormSelect.init(this.$refs.select);
     // this.categories = JSON.parse(localStorage.getItem('categoriesActiveUser'))
     // console.log('mounted this.categories', this.categories)

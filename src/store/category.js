@@ -1,10 +1,18 @@
 const http = require('http');
 export default {
+	state: {
+    categoriesActiveUser: ''
+  },
 
-	mutation:{
+	mutations:{
 		createCategory(){
 			
 	},
+	categoriesActiveUser(state, data){
+		console.log('categoriesActiveUser', data)
+	  state.categoriesActiveUser = data
+	}
+
 },
      actions:{
 			async fetchCategories({dispatch, commit}){
@@ -29,9 +37,10 @@ export default {
 					res.setEncoding('utf8');
 					res.on('data', (chunk) => {
 						const data = JSON.parse(chunk)
-						console.log('categories: ', data);
+						console.log('categories: ', data[0]);
 						localStorage.setItem('categoriesActiveUser', JSON.stringify(data));
-						commit('setInfo', data.user_id)
+						// commit('setInfo', data.user_id)
+						commit('categoriesActiveUser', data)
 						return data
 					});
 					res.on('end', () => {
@@ -46,13 +55,30 @@ export default {
 				// Write data to request body
 				req.write(JSON.stringify(tablename));
 				req.end();
-				console.log('categories 2: ', data); 
+				 
 			}
 			catch(e){
 		
 			}
 			},
-
+			async updateCategory({commit, dispatch}, categoryData){
+				 	console.log('action updateCategory', categoryData)
+				try {
+					await fetch('http://localhost:8000/updateCategory', {
+						method: 'PUT',
+						headers: {
+							'Content-Type': 'application/json;charset=utf-8'
+					 },
+					 body: JSON.stringify(categoryData)
+				 })
+				 this.$message('Категория успешно обновлена')
+				}catch (e){
+					commit('setError', e)
+					throw e
+				}		
+				
+				dispatch('fetchCategories')
+			},
 
 			
 			async createCategory({store, commit, dispatch}, category){
@@ -69,18 +95,21 @@ export default {
 							headers: {
 								'Content-Type': 'application/json;charset=utf-8'
 						 },
-							
 						 body: JSON.stringify(category)
-							
 					 })
-						 
-
-						
 					}catch (e){
 						commit('setError', e)
 						throw e
 					}
         }
             
-    }
+    },
+		getters:{
+			categoriesActiveUser_g(state){
+				 
+					return state.categoriesActiveUser
+			 
+			}
+
+		}
 }
