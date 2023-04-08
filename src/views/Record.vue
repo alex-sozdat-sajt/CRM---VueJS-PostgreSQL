@@ -13,7 +13,7 @@
   <Loader  v-if='loading'/>
   <p class="center" v-else-if="!categories.length">Категорий пока нет <router-link to="/categories">Добавить новую категорию</router-link></p>
 
-  <form class="form" v-else>
+  <form class="form" v-else @submit.prevent="handleSubmit">
     <div class="input-field" >
       <select 
        ref="select" v-model="category">
@@ -58,9 +58,10 @@
           id="amount"
           type="number"
           v-model.number="amount"
+         
       >
       <label for="amount">Сумма</label>
-      <span class="helper-text invalid">amount пароль</span>
+      
     </div>
 
     <div class="input-field">
@@ -68,11 +69,13 @@
           id="description"
           type="text"
           v-model="description"
-           class="{invalid: $v.title.$dirty && !$v.title.required}"
+           
       >
       <label for="description">Описание</label>
-      <span
-            class="helper-text invalid">description пароль</span>
+            <span 
+                     
+               
+                >Введите описание</span>
     </div>
 
     <button class="btn waves-effect waves-light" type="submit">
@@ -93,6 +96,8 @@
 </div>
 </template>
 <script>
+ import {required, minValue} from 'vuelidate/lib/validators'
+ import {mapGetters} from 'vuex'
 import Loader from '../components/app/Loader.vue'
 export default {
   name: 'record', 
@@ -105,11 +110,33 @@ export default {
     amount: 1,
     description: ''
   }),
+  
+  methods:{
+    handleSubmit(){
+      // console.log(this.$v.limit)
+        // if(this.$v.$invalid){
+        //   this.$v.$touch()
+        //   return 
+        // }
+         if(this.canCreateRecord){
+            console.log('OK')
+    } else {
+      this.$message(`Недостаточно средст на счете (${this.amount - this.info.bill})`)
+    }
+
+    }
+    
+  },
   computed:{
+    ...mapGetters(['info']),
     categoriesActiveUser_c () {
      
     return this.$store.getters.categoriesActiveUser_g
-  }
+  },
+  canCreateRecord(){
+    if(this.type === 'income'){return true}
+    return this.info.bill >=this.amount
+  },
   },
   async mounted(){
      
@@ -118,7 +145,9 @@ export default {
     console.log('this.categories', this.categories)
     this.loading = false
     console.log('M.FormSelect.init(this.$refs.select', M.FormSelect.init(this.$refs.select))
-    setTimeout(()=>{this.select =  M.FormSelect.init(this.$refs.select)},0)
+    setTimeout(()=>{this.select =  M.FormSelect.init(this.$refs.select)
+    M.updateTextFields()
+    },0)
     if(this.categories.length){
       this.category = this.categories[0].expense_id
     }

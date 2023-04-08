@@ -28,8 +28,13 @@
                 <input v-model="limit"
                     id="limit"
                     type="number"
+                    :class="{invalid: $v.limit.$dirty && !$v.limit.minValue}"
                 >
-                <label for="limit">Лимит</label>
+               <span 
+                     
+                v-if ="$v.limit.$dirty && !$v.limit.minValue"
+                class="helper-text invalid"
+                >Минимальная величина {{$v.limit.$params.minValue.min}}</span>
                 <span class="helper-text invalid">LIMIT</span>
               </div>
 
@@ -42,6 +47,8 @@
         </div>
 </template>
 <script>
+    
+   import {required, minValue} from 'vuelidate/lib/validators'
 export default {
   // props:{
     // categories:{
@@ -58,6 +65,10 @@ export default {
     select: null,
     categories: JSON.parse(localStorage.getItem('categoriesActiveUser')),
   }),
+      validations:{
+    title:{required},
+    limit: {minValue: minValue(100)}
+  },
   watch:{
     current(value){
       console.log('this.categories', this.categories)

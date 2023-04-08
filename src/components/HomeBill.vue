@@ -24,8 +24,7 @@ export default {
   }),
   computed:{
     base(){
-      console.log('this.$store.getters.info.bill', this.$store.getters.info.bill)
-      return this.$store.getters.info.bill/(this.rates['RUB']/this.rates['EUR'])
+       return this.$store.getters.reLoadFromLocalStorageDataActiveUsertoStorage.bill/(this.rates['RUB']/this.rates['EUR'])
     } 
   },
   methods: {
