@@ -112,30 +112,53 @@ export default {
   }),
   
   methods:{
-    handleSubmit(){
+   async handleSubmit(){
       // console.log(this.$v.limit)
         // if(this.$v.$invalid){
         //   this.$v.$touch()
         //   return 
         // }
          if(this.canCreateRecord){
-            console.log('OK')
-    } else {
-      this.$message(`Недостаточно средст на счете (${this.amount - this.info.bill})`)
-    }
+          try{
+             await this.$store.dispatch('createRecord', {
+              categoryId: this.category, 
+              amount: this.amount,
+              description: this.description,
+              type: this.type,
+              date: new Date().toJSON()
+            })
+            const bill = this.type === 'income'
+            ? this.reLoadFromLocalStorageDataActiveUsertoStorage.bill + this.amount
+            : this.info.bill - this.amount
+            //далее обновление счета в базе данных
+            await this.$store.dispatch('updateInfo', {bill})
+            this.$message('Запись успешно создана')
+            this.$v.reset() //очистка полей формы
+            this.amount = 1
+            this.description = ''
 
+          }catch(e){  }
+            console.log('OK')
+            
+    } else {
+       this.$message(`Недостаточно средст на счете (${this.amount - this.reLoadFromLocalStorageDataActiveUsertoStorage.bill})`)
+     
     }
+    }
+      
+
+    
     
   },
-  computed:{
-    ...mapGetters(['info']),
+  computed:{ 
+    ...mapGetters(['reLoadFromLocalStorageDataActiveUsertoStorage']),
     categoriesActiveUser_c () {
      
     return this.$store.getters.categoriesActiveUser_g
   },
   canCreateRecord(){
     if(this.type === 'income'){return true}
-    return this.info.bill >=this.amount
+    return this.reLoadFromLocalStorageDataActiveUsertoStorage.bill >=this.amount
   },
   },
   async mounted(){

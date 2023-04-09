@@ -20,11 +20,22 @@ export default {
 
   },
   actions: {
+    async updateInfo({}, toUpdate){
+      // updatedataActiveUser
+      // у пользователя поменяется остаток на счете после поступления или расхода
+      try{
+
+      }catch(e){
+        commit
+      }
+
+    },
     async fetchinfo({dispatch, commit}){
         const uid = await dispatch('getActiveUser')
     },
    
   async dataActiveUser({dispatch, commit}, user_id){
+    //получение данных пользователя из БД
     try{
     console.log('dispatch dataActiveUserdataActiveUserdataActiveUser')
     const postData = JSON.stringify({
