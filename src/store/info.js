@@ -20,7 +20,7 @@ export default {
 
   },
   actions: {
-    async updateInfo({}, toUpdate){
+    async updateInfo({dispatch, commit, getters}, toUpdate){
       // updatedataActiveUser
       // у пользователя поменяется остаток на счете после поступления или расхода
       try{

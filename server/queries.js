@@ -20,7 +20,7 @@ const getUsers = (request, response) => {
   });
 };
 
-/**!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+/**!!!!!!!!!!!!!!!!!!!!!!!!!!!!ниже   запросы к БД!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
 
 /****my  dataFromDb  results.rows*/
 const dataFromDb = (request, response) => {
@@ -76,7 +76,9 @@ const setActiveUser = (request, response) => {
         // console.log(results);
       }
     );}catch(e){}
-    const sql = `CREATE TABLE ${expense}(expense_id SERIAL, expense_items varchar, expense_limit int, remains int)`
+    const category_table = `category_${expense}`
+    console.log('category_table ', `${category_table}`)
+    const sql = `CREATE TABLE ${category_table}(expense_id SERIAL, expense_items varchar, expense_limit int, remains int)`
     console.log('!!!!!!!', sql)
     try{pool.query(
           sql,
@@ -84,12 +86,29 @@ const setActiveUser = (request, response) => {
         if (error) {
           throw error;
         }
+        
         // response.status(200).send(`TABLE CREATED`);
         // console.log(results);
       }
     );}catch(e){}
-
+    const record_table = `record_${expense}`
+    console.log('record_table ', `${record_table}`)
+    
+    const sql_r = `CREATE TABLE ${record_table}(record_id SERIAL, record_items varchar, record_type varchar, record_amount int, category_id int, record_data date)`
+    console.log('!!!!!!!', sql_r)
+    try{pool.query(
+          sql_r,
+        (error, results) => {
+        if (error) {
+          throw error;
+        }
+        
+        // response.status(200).send(`TABLE CREATED`);
+        // console.log(results);
+      }
+    );}catch(e){}
   };
+    
    /**** my  deleteActiveUser    results.insertId*/
    const deleteActiveUser = (request, response) => {
     console.log('!!!!!!!!!!!!!!!!!!!deleteActiveUser!!!!!!!!!!!!!!!!!!!!!!!');
@@ -117,10 +136,10 @@ const setActiveUser = (request, response) => {
     console.log('!!!!!!!!!!!!!!!!!addCategory!!!!!!!!!!!!!!!!!!!');
     const { expense, title, limit} = request.body;
     console.log( expense, title, limit);
-    
-    
+    const category_table = `category_${expense}`
+    console.log( `INSERT INTO ${category_table} VALUES (DEFAULT, '${title}', ${limit})`)
     pool.query(
-        `INSERT INTO ${expense} VALUES (DEFAULT, '${title}', ${limit})`, (error, results) => {
+        `INSERT INTO ${category_table} VALUES (DEFAULT, '${title}', ${limit})`, (error, results) => {
         if (error) {
           throw error;
         }
@@ -129,6 +148,56 @@ const setActiveUser = (request, response) => {
       }
     );
   };
+  /**** my  addRecord    results.insertId*/
+  const addRecord = (request, response) => {
+    console.log('!!!!!!!!!!!!!!!!!addRecord!!!!!!!!!!!!!!!!!!!');
+      /*(record_id SERIAL, record_items varchar, record_type varchar, record_amount int, category_id int, record_data date)`Id*/
+     
+    const {description, type,  amount, categoryId, date, recordTableName, DataTableName, bill, email} = request.body;
+    console.log( 'description, type,  amount, categoryId, date', description, type,  amount, categoryId, date, recordTableName, DataTableName, email);
+    
+    const sql_ar =   `INSERT INTO ${recordTableName} VALUES (DEFAULT, '${description}', '${type}', ${amount}, ${categoryId}, ${date})`
+    console.log( 'sql_ar', sql_ar)
+    
+    pool.query(
+      `INSERT INTO ${recordTableName} VALUES (DEFAULT,'${description}','${type}', ${amount}, ${categoryId})`, (error, results) => {
+        if (error) {
+          throw error;
+        }
+        // response.status(201).send(`Category added `);
+        // console.log(results);
+      }
+    );//изменение остатков по счету на величину расхода/дохода
+    if(type==='outcome'){
+      const rebill = bill - amount;
+      console.log( 'rebill', rebill)
+      console.log( 'bill', bill)
+      console.log( 'rebill', `UPDATE crmuser SET bill = ${rebill} WHERE e_mail1='${email}'`)
+
+      pool.query(
+        `UPDATE crmuser SET bill = ${rebill} WHERE e_mail1='${email}'`, (error, results) => {
+          if (error) {
+            throw error;
+          }
+          response.status(201).send(`Category added `);
+          console.log(results);
+        }
+      );
+    }else{
+      const rebill = bill + amount;
+      pool.query(
+        `UPDATE crmuser SET bill = ${rebill} WHERE email1=${email}`, (error, results) => {
+          if (error) {
+            throw error;
+          }
+          response.status(201).send(`Category added `);
+          console.log(results);
+        }
+      );
+    }
+    
+  };
+
    /**** my  updateCategory    results.insertId*/
    const updateCategory = (request, response) => {
     console.log('!!!!!!!!!!!!!!!!!updateCategory!!!!!!!!!!!!!!!!!!!');
@@ -153,8 +222,9 @@ const setActiveUser = (request, response) => {
     console.log('fetchCategoriesfetchCategoriesfetchCategoriesfetchCategoriesfetchCategoriesfetchCategoriesfetchCategoriesfetchCategories'); 
     const  {table_name} = request.body;
     console.log(table_name);
-
-    const sql =  'SELECT * FROM '+`${table_name}`
+    const category_table = `category_${table_name}`
+    console.log('category_table fetch', category_table);
+    const sql =  'SELECT * FROM '+`${category_table}`
     console.log(sql);
     pool.query(
         sql,
@@ -244,6 +314,7 @@ module.exports = {
   
   dataFromDb,
   addUser,
+  addRecord,
   setActiveUser,
   dataActiveUser,
   deleteActiveUser,

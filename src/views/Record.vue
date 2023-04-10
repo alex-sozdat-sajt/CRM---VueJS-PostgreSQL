@@ -118,15 +118,24 @@ export default {
         //   this.$v.$touch()
         //   return 
         // }
+          
          if(this.canCreateRecord){
+         
           try{
-             await this.$store.dispatch('createRecord', {
+             const recordData = {
               categoryId: this.category, 
               amount: this.amount,
               description: this.description,
               type: this.type,
-              date: new Date().toJSON()
-            })
+              date: new Date().toJSON(),
+              recordTableName: 'record_'+JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['expense'],
+              DataTableName: JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['expense'],
+              email: JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['e_mail1'],
+              bill: JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['bill'],
+               
+            }
+             console.log('canCreateRecord ', recordData)
+           await this.$store.dispatch('addRecord', recordData)
             const bill = this.type === 'income'
             ? this.reLoadFromLocalStorageDataActiveUsertoStorage.bill + this.amount
             : this.info.bill - this.amount
@@ -138,7 +147,7 @@ export default {
             this.description = ''
 
           }catch(e){  }
-            console.log('OK')
+            console.log('Запись успешно создана')
             
     } else {
        this.$message(`Недостаточно средст на счете (${this.amount - this.reLoadFromLocalStorageDataActiveUsertoStorage.bill})`)

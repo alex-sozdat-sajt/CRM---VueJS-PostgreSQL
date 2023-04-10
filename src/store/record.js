@@ -1,13 +1,24 @@
 const http = require('http');
 export default {
     actions: {
-        async canCreateRecord({commit, dispatch}, record){
-     try{
-
-     }  catch(e){  
-        commit('setError', e)
-        throw e
-      }     
+        async addRecord({commit, dispatch}, recordData){
+         console.log('canCreateRecord action ', recordData)
+     try {
+       await fetch('http://localhost:8000/addRecord', {
+         method: 'POST',
+         headers: {
+           'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(recordData)
+      })
+      this.$message('Запись успешно добавлена')
+     }catch (e){
+       commit('setError', e)
+       throw e
+     }		
+     
+    //  dispatch('fetchCategories')
+      
     }
 }
 }

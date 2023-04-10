@@ -175,7 +175,7 @@ export default {
         password: this.password,
         name: this.name,
         email: this.email,
-        expense: `${this.name}_${this.password.length}_${(this.email+this.password.length+this.name).length}`,
+        expense: (`${this.name}_${this.password.length}_${(this.email+this.password.length+this.name).length}`).toLowerCase(),
         bill: 10000,
 
       };
