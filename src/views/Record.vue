@@ -108,7 +108,8 @@ export default {
     category: null,
     type: 'outcome',
     amount: 1,
-    description: ''
+    description: '',
+    expense_limit:'',
   }),
   
   methods:{
@@ -118,10 +119,20 @@ export default {
         //   this.$v.$touch()
         //   return 
         // }
-          
+        //let categoriesActiveUser = JSON.parse(localStorage.getItem('categoriesActiveUser')),
+        //  [
+        //     {id: 1, name: "Вася"},
+        //     {id: 2, name: "Петя"},
+        //     {id: 3, name: "Маша"}
+        //   ];
+
+          let record = this.categories.find(item => item['expense_id'] === this.category);
+          this.expense_limit = record['expense_limit'];
+          console.log('this.expense_limit', this.expense_limit)
          if(this.canCreateRecord){
          
           try{
+
              const recordData = {
               categoryId: this.category, 
               amount: this.amount,
@@ -132,7 +143,8 @@ export default {
               DataTableName: JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['expense'],
               email: JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['e_mail1'],
               bill: JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['bill'],
-               
+              categoryTableName: 'category_'+JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['expense'],
+               expense_limit: this['expense_limit']
             }
              console.log('canCreateRecord ', recordData)
            await this.$store.dispatch('addRecord', recordData)

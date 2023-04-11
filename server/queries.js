@@ -153,7 +153,7 @@ const setActiveUser = (request, response) => {
     console.log('!!!!!!!!!!!!!!!!!addRecord!!!!!!!!!!!!!!!!!!!');
       /*(record_id SERIAL, record_items varchar, record_type varchar, record_amount int, category_id int, record_data date)`Id*/
      
-    const {description, type,  amount, categoryId, date, recordTableName, DataTableName, bill, email} = request.body;
+    const {description, type,  amount, categoryId, date, recordTableName, DataTableName, bill, email, categoryTableName} = request.body;
     console.log( 'description, type,  amount, categoryId, date', description, type,  amount, categoryId, date, recordTableName, DataTableName, email);
     
     const sql_ar =   `INSERT INTO ${recordTableName} VALUES (DEFAULT, '${description}', '${type}', ${amount}, ${categoryId}, ${date})`
@@ -179,6 +179,15 @@ const setActiveUser = (request, response) => {
           if (error) {
             throw error;
           }
+          // response.status(201).send(`Category added `);
+          // console.log(results);
+        }
+      );
+      pool.query(
+        `UPDATE ${categoryTableName} SET expense_limit = ${rebill} WHERE expense_id='${categoryId}'`, (error, results) => {
+          if (error) {
+            throw error;
+          }
           response.status(201).send(`Category added `);
           console.log(results);
         }
@@ -187,6 +196,15 @@ const setActiveUser = (request, response) => {
       const rebill = bill + amount;
       pool.query(
         `UPDATE crmuser SET bill = ${rebill} WHERE email1=${email}`, (error, results) => {
+          if (error) {
+            throw error;
+          }
+          // response.status(201).send(`Category added `);
+          // console.log(results);
+        }
+      );
+      pool.query(
+        `UPDATE ${categoryTableName} SET expense_limit = ${rebill} WHERE expense_id='${categoryId}'`, (error, results) => {
           if (error) {
             throw error;
           }

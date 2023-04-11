@@ -116,7 +116,7 @@ export default {
          expense_idf: this.id,
          expense_itemsf: this.title,
          expense_limitf: this.limit,
-         expense_user_tablef: JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['expense'].toLowerCase()
+         expense_user_tablef: 'category_'+JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['expense'].toLowerCase()
         }
          console.log('categoryData', categoryData.expense_user_tablef)
          console.log('this.categories', this.categories[1]['expense_id'])
