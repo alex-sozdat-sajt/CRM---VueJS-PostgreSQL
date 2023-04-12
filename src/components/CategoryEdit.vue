@@ -72,12 +72,16 @@ export default {
   watch:{
     current(value){
       console.log('this.categories', this.categories)
-        console.log('this.categories.expense_items', this.categories[0]['expense_items'])
+         
       console.log('this.categories value', value)
       for(let i=0;i<this.categories.length; i++){
           if(this.categories[i]['expense_items'] === value){
              this.title = this.categories[i]['expense_items']
              this.limit = this.categories[i]['expense_limit']
+             this.id = this.categories[i]['expense_id']
+             console.log('this.title', this.title)
+             console.log('this.limit',  this.limit)
+             console.log('this.id', this.id)
          }
       }
 

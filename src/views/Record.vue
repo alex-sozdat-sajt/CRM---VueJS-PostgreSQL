@@ -110,7 +110,7 @@ export default {
     amount: 1,
     description: '',
     expense_limit:'',
-  }),
+  }),//select связан через category сюда передается :value="cat.expense_id" из select
   
   methods:{
    async handleSubmit(){
@@ -144,7 +144,7 @@ export default {
               email: JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['e_mail1'],
               bill: JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['bill'],
               categoryTableName: 'category_'+JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['expense'],
-               expense_limit: this['expense_limit']
+              expense_limit: this.expense_limit,
             }
              console.log('canCreateRecord ', recordData)
            await this.$store.dispatch('addRecord', recordData)

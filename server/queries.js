@@ -153,7 +153,7 @@ const setActiveUser = (request, response) => {
     console.log('!!!!!!!!!!!!!!!!!addRecord!!!!!!!!!!!!!!!!!!!');
       /*(record_id SERIAL, record_items varchar, record_type varchar, record_amount int, category_id int, record_data date)`Id*/
      
-    const {description, type,  amount, categoryId, date, recordTableName, DataTableName, bill, email, categoryTableName} = request.body;
+    const {description, type,  amount, categoryId, date, recordTableName, DataTableName, bill, email, categoryTableName, expense_limit} = request.body;
     console.log( 'description, type,  amount, categoryId, date', description, type,  amount, categoryId, date, recordTableName, DataTableName, email);
     
     const sql_ar =   `INSERT INTO ${recordTableName} VALUES (DEFAULT, '${description}', '${type}', ${amount}, ${categoryId}, ${date})`
@@ -170,6 +170,8 @@ const setActiveUser = (request, response) => {
     );//изменение остатков по счету на величину расхода/дохода
     if(type==='outcome'){
       const rebill = bill - amount;
+      const re_expense_limit = expense_limit - amount;
+      expense_limit
       console.log( 'rebill', rebill)
       console.log( 'bill', bill)
       console.log( 'rebill', `UPDATE crmuser SET bill = ${rebill} WHERE e_mail1='${email}'`)
@@ -184,16 +186,18 @@ const setActiveUser = (request, response) => {
         }
       );
       pool.query(
-        `UPDATE ${categoryTableName} SET expense_limit = ${rebill} WHERE expense_id='${categoryId}'`, (error, results) => {
+        `UPDATE ${categoryTableName} SET expense_limit = ${re_expense_limit} WHERE expense_id='${categoryId}'`, (error, results) => {
           if (error) {
             throw error;
           }
-          response.status(201).send(`Category added `);
+          
+          response.status(200).send(`Category added rebill ${rebill} re_expense_limit  ${re_expense_limit}`);
           console.log(results);
         }
       );
     }else{
       const rebill = bill + amount;
+      const re_expense_limit = expense_limit + amount;
       pool.query(
         `UPDATE crmuser SET bill = ${rebill} WHERE email1=${email}`, (error, results) => {
           if (error) {
@@ -204,7 +208,7 @@ const setActiveUser = (request, response) => {
         }
       );
       pool.query(
-        `UPDATE ${categoryTableName} SET expense_limit = ${rebill} WHERE expense_id='${categoryId}'`, (error, results) => {
+        `UPDATE ${categoryTableName} SET expense_limit = ${re_expense_limit} WHERE expense_id='${categoryId}'`, (error, results) => {
           if (error) {
             throw error;
           }
