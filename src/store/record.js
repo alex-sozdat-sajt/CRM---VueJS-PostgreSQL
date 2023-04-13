@@ -10,7 +10,7 @@ export default {
            'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(recordData)
-      })
+      }).then(response => {console.log('response.json()', response.json())})
       this.$message('Запись успешно добавлена')
      }catch (e){
        commit('setError', e)

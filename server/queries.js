@@ -191,7 +191,7 @@ const setActiveUser = (request, response) => {
             throw error;
           }
           
-          response.status(200).send(`Category added rebill ${rebill} re_expense_limit  ${re_expense_limit}`);
+          response.status(200).send(JSON.stringify({Category_added_rebill: rebill, re_expense_limit: re_expense_limit}));
           console.log(results);
         }
       );
