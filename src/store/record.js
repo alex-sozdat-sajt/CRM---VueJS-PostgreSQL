@@ -11,6 +11,7 @@ export default {
         },
         body: JSON.stringify(recordData)
       }).then(response => {console.log('response.json()', response.json())})
+      .then(dispatch('dataActiveUser', recordData.user_id))
       this.$message('Запись успешно добавлена')
      }catch (e){
        commit('setError', e)

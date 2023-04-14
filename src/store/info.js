@@ -37,14 +37,14 @@ export default {
   async dataActiveUser({dispatch, commit}, user_id){
     //получение данных пользователя из БД
     try{
-    console.log('dispatch dataActiveUserdataActiveUserdataActiveUser')
+     
     const postData = JSON.stringify({
       user_id: user_id,
     });
-   
+    console.log('dispatch dataActiveUserdataActiveUserdataActiveUser', postData)
     const options = {
-      hostname: 'localhost:8000',
-      // port: 80,
+      hostname: 'localhost',
+      port: 8000,
       path: '/dataActiveUser', 
       // url: 'http://localhost:8000/dataActiveUser',
       method: 'POST',
@@ -55,7 +55,7 @@ export default {
        
     };
     
-    const req = http.request('http://localhost:8000/dataActiveUser', (res) => {
+    const req = http.request(options, (res) => {
        
       console.log(`STATUS: ${res.statusCode}`);
       console.log(`HEADERS: ${JSON.stringify(res.headers)}`);

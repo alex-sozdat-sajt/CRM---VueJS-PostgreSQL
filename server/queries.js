@@ -35,9 +35,11 @@ const dataFromDb = (request, response) => {
   };
 /**** my  dataActiveUser    */
 const dataActiveUser = (request, response) => {
-    console.log('dataActiveUserdataActiveUserdataActiveUserdataActiveUser')
-    const user_id = parseInt(request.params.user_id);
-  
+     
+    // const user_id = parseInt(request.params.user_id);
+    const user_id = request.params.user_id;
+
+    console.log('dataActiveUserdataActiveUserdataActiveUserdataActiveUser', user_id)
     pool.query("SELECT * FROM crmuser WHERE user_id = $1", [user_id], (error, results) => {
       if (error) {
         throw error;

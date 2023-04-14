@@ -143,6 +143,7 @@ export default {
               DataTableName: JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['expense'],
               email: JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['e_mail1'],
               bill: JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['bill'],
+              user_id: JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['user_id'],
               categoryTableName: 'category_'+JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['expense'],
               expense_limit: this.expense_limit,
             }
