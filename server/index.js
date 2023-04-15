@@ -8,6 +8,12 @@ const db = require("./queries");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
+app.use((req, res, next) => {
+  // res.append('Access-Control-Allow-Origin', 'no-cors');
+  res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.append('Access-Control-Allow-Headers', 'Content-Type', '*');
+  next();
+});
 
 app.get("/", (request, response) => {
   response.json({ info: "Node.js, Express, and Postgres API" });

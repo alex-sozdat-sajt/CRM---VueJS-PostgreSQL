@@ -148,12 +148,13 @@ export default {
               expense_limit: this.expense_limit,
             }
              console.log('canCreateRecord ', recordData)
-           await this.$store.dispatch('addRecord', recordData)
-            const bill = this.type === 'income'
-            ? this.reLoadFromLocalStorageDataActiveUsertoStorage.bill + this.amount
-            : this.info.bill - this.amount
+            //await this.$store.dispatch('addRecord', recordData)
+            // const bill = this.type === 'income'
+            // ? this.reLoadFromLocalStorageDataActiveUsertoStorage.bill + this.amount
+            // : this.info.bill - this.amount
             //далее обновление счета в базе данных
-            await this.$store.dispatch('updateInfo', {bill})
+            await this.$store.dispatch('dataActiveUser', recordData.user_id);
+            //await this.$store.dispatch('updateInfo', {bill})
             this.$message('Запись успешно создана')
             this.$v.reset() //очистка полей формы
             this.amount = 1

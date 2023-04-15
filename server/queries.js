@@ -37,14 +37,17 @@ const dataFromDb = (request, response) => {
 const dataActiveUser = (request, response) => {
      
     // const user_id = parseInt(request.params.user_id);
-    const user_id = request.params.user_id;
+    // const user_id = request.params.user_id;
+     const user_id = '3@mail.ru3Olega'
 
     console.log('dataActiveUserdataActiveUserdataActiveUserdataActiveUser', user_id)
     pool.query("SELECT * FROM crmuser WHERE user_id = $1", [user_id], (error, results) => {
       if (error) {
         throw error;
       }
-      response.status(200).json(results.rows);
+      console.log('results.rows',  results.rows)
+       response.status(200).json(results.rows);
+      // response.status(200).json(response.headers);
     });
   };
 /**** my  setActiveUser    results.insertId*/
