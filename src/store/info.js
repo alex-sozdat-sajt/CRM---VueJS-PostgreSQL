@@ -94,7 +94,12 @@ export default {
     headers: headers
 
    })
-   .then(response => console.log('response.text()', response.text()))
+   .then(response => 
+    {
+      const dataActiveUserfDb = response.json()
+      console.log('dataActiveUserfDb', dataActiveUserfDb)
+    });
+    
 },
   
   reLoadFromLocalStorageDataActiveUsertoStorage({commit}){
