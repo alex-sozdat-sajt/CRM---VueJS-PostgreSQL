@@ -158,8 +158,8 @@ const setActiveUser = (request, response) => {
     console.log('!!!!!!!!!!!!!!!!!addRecord!!!!!!!!!!!!!!!!!!!');
       /*(record_id SERIAL, record_items varchar, record_type varchar, record_amount int, category_id int, record_data date)`Id*/
      
-    const {description, type,  amount, categoryId, date, recordTableName, DataTableName, bill, email, categoryTableName, expense_limit} = request.body;
-    console.log( 'description, type,  amount, categoryId, date', description, type,  amount, categoryId, date, recordTableName, DataTableName, email);
+    const {description, type,  amount, categoryId, date, recordTableName, DataTableName, bill, email, categoryTableName, expense_limit, remains} = request.body;
+    console.log( 'description, type,  amount, categoryId, date, recordTableName, DataTableName, email, expense_limit, remains', description, type,  amount, categoryId, date, recordTableName, DataTableName, email, expense_limit, remains);
     
     const sql_ar =   `INSERT INTO ${recordTableName} VALUES (DEFAULT, '${description}', '${type}', ${amount}, ${categoryId}, ${date})`
     console.log( 'sql_ar', sql_ar)
@@ -175,7 +175,8 @@ const setActiveUser = (request, response) => {
     );//изменение остатков по счету на величину расхода/дохода
     if(type==='outcome'){
       const rebill = bill - amount;
-      const re_expense_limit = expense_limit - amount;
+      const re_remains = remains - amount;
+      console.log('const remains = expense_limit - amount;',bill, expense_limit, amount, remains)
       expense_limit
       console.log( 'rebill', rebill)
       console.log( 'bill', bill)
@@ -191,18 +192,18 @@ const setActiveUser = (request, response) => {
         }
       );
       pool.query(
-        `UPDATE ${categoryTableName} SET expense_limit = ${re_expense_limit} WHERE expense_id='${categoryId}'`, (error, results) => {
+        `UPDATE ${categoryTableName} SET remains = ${re_remains} WHERE expense_id='${categoryId}'`, (error, results) => {
           if (error) {
             throw error;
           }
           
-          response.status(200).send(JSON.stringify({Category_added_rebill: rebill, re_expense_limit: re_expense_limit}));
+          response.status(200).send(JSON.stringify({Category_added_rebill: rebill, remains: re_remains}));
           console.log(results);
         }
       );
     }else{
       const rebill = bill + amount;
-      const re_expense_limit = expense_limit + amount;
+      const re_remains = remains + amount;
       pool.query(
         `UPDATE crmuser SET bill = ${rebill} WHERE email1=${email}`, (error, results) => {
           if (error) {
@@ -213,7 +214,7 @@ const setActiveUser = (request, response) => {
         }
       );
       pool.query(
-        `UPDATE ${categoryTableName} SET expense_limit = ${re_expense_limit} WHERE expense_id='${categoryId}'`, (error, results) => {
+        `UPDATE ${categoryTableName} SET remains = ${re_remains} WHERE expense_id='${categoryId}'`, (error, results) => {
           if (error) {
             throw error;
           }
@@ -264,6 +265,28 @@ const setActiveUser = (request, response) => {
       }
     );
   };
+   /**** my  fetchRecord    results.insertId*/
+   const fetchRecords = (request, response) => {
+    console.log('fetchRecordfetchRecordfetchRecordfetchRecord'); 
+    const  {record_table} = request.body;
+    console.log('record_table ', record_table);
+    // const record_table = `record_${table_name}`
+    console.log('record_table fetch', record_table);
+    const sql =  'SELECT * FROM '+`${record_table}`
+    console.log(sql);
+    pool.query(
+        sql,
+        (error, results) => {
+        if (error) {
+          throw error;
+        }
+        response.status(200).json(results.rows);
+        console.log(results);
+      }
+    );
+  };
+
+  
 
  /**!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/ 
 /**
@@ -342,6 +365,7 @@ module.exports = {
   dataFromDb,
   addUser,
   addRecord,
+  fetchRecords,
   setActiveUser,
   dataActiveUser,
   deleteActiveUser,

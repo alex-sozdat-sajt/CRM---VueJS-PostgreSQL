@@ -33,6 +33,7 @@ app.get("/deleteActiveUser", db.deleteActiveUser);
 app.get("/getActiveUser", db.getActiveUser);
 app.post("/addCategory", db.addCategory);
 app.post("/addRecord", db.addRecord);
+app.post("/fetchRecords", db.fetchRecords);
 app.put("/updateCategory", db.updateCategory);
 app.post("/fetchCategories", db.fetchCategories);
 

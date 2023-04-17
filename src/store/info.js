@@ -87,19 +87,18 @@ export default {
   const headers = {
     'Content-Type': 'application/json'
   }
-  const body = {user_url: '3@mail.ru3Olega'}
-   fetch('http://localhost:8000/dataActiveUser',{
+  // const body1 = {user_url: '3@mail.ru3Olega'}
+  const body = {user_url:  JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['user_id']}
+  // console.log('body1 ', body1, 'body ', body)
+   const response = await fetch('http://localhost:8000/dataActiveUser',{
     method: 'POST',
     body: JSON.stringify(body),
     headers: headers
-
    })
-   .then(response => 
-    {
-      const dataActiveUserfDb = response.json()
-      console.log('dataActiveUserfDb', dataActiveUserfDb)
-    });
-    
+   const data = await  response.json()
+   console.log('data', data[0])
+   localStorage.removeItem('dataActiveUsertoStorage');
+   localStorage.setItem('dataActiveUsertoStorage', JSON.stringify(data[0]));
 },
   
   reLoadFromLocalStorageDataActiveUsertoStorage({commit}){

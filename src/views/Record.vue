@@ -26,7 +26,7 @@
       </select>
       <label>Выберите категорию</label>
     </div>
-    <h3>Новая запись</h3>
+    
     <p>
       <label>
         <input
@@ -110,6 +110,7 @@ export default {
     amount: 1,
     description: '',
     expense_limit:'',
+    remains: '100',
   }),//select связан через category сюда передается :value="cat.expense_id" из select
   
   methods:{
@@ -146,14 +147,18 @@ export default {
               user_id: JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['user_id'],
               categoryTableName: 'category_'+JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['expense'],
               expense_limit: this.expense_limit,
+              remains: this.remains,
             }
              console.log('canCreateRecord ', recordData)
-            //await this.$store.dispatch('addRecord', recordData)
+            await this.$store.dispatch('addRecord', recordData)
             // const bill = this.type === 'income'
             // ? this.reLoadFromLocalStorageDataActiveUsertoStorage.bill + this.amount
             // : this.info.bill - this.amount
-            //далее обновление счета в базе данных
+            
             await this.$store.dispatch('dataActiveUser', recordData.user_id);
+            await this.$store.dispatch('fetchCategories');
+
+             
             //await this.$store.dispatch('updateInfo', {bill})
             this.$message('Запись успешно создана')
             this.$v.reset() //очистка полей формы
@@ -181,7 +186,8 @@ export default {
   },
   canCreateRecord(){
     if(this.type === 'income'){return true}
-    return this.reLoadFromLocalStorageDataActiveUsertoStorage.bill >=this.amount
+    // return this.reLoadFromLocalStorageDataActiveUsertoStorage.bill >=this.amount
+   return true
   },
   },
   async mounted(){
