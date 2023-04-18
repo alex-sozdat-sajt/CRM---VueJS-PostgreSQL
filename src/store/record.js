@@ -36,7 +36,8 @@ export default {
        const data = await  response.json()
        console.log('data', data)
       //  localStorage.removeItem('dataActiveUsertoStorage');
-      //  localStorage.setItem('dataActiveUsertoStorage', JSON.stringify(data[0]));
+       localStorage.setItem('RecordsActiveUser', JSON.stringify(data));
+       return data
     },
 
 }

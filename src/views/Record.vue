@@ -21,6 +21,8 @@
         v-for="cat in categories"
         :key="cat.expense_id"
         :value="cat.expense_id"
+        v-bind:remains="cat.remains"
+       
         > {{cat.expense_items}}
         </option>
       </select>
@@ -110,7 +112,7 @@ export default {
     amount: 1,
     description: '',
     expense_limit:'',
-    remains: '100',
+    remains: '',
   }),//select связан через category сюда передается :value="cat.expense_id" из select
   
   methods:{
@@ -129,6 +131,7 @@ export default {
 
           let record = this.categories.find(item => item['expense_id'] === this.category);
           this.expense_limit = record['expense_limit'];
+          this.remains = record['expense_limit'];
           console.log('this.expense_limit', this.expense_limit)
          if(this.canCreateRecord){
          

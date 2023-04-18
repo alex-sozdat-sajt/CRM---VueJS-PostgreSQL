@@ -15,35 +15,7 @@
   </div>
 
   <section>
-    <table>
-      <thead>
-      <tr>
-        <th>#</th>
-        <th>Сумма</th>
-        <th>Дата</th>
-        <th>Категория</th>
-        <th>Тип</th>
-        <th>Открыть</th>
-      </tr>
-      </thead>
-
-      <tbody>
-      <tr>
-        <td>1</td>
-        <td>1212</td>
-        <td>12.12.32</td>
-        <td>name</td>
-        <td>
-          <span class="white-text badge red">Расход</span>
-        </td>
-        <td>
-          <button class="btn-small btn">
-            <i class="material-icons">open_in_new</i>
-          </button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+   <HistoryTable />
   </section>
 </div>
 
@@ -57,3 +29,36 @@
 </div>
 </div>
 </template>
+<script>
+import HistoryTable from '@/components/HistoryTable'
+export default {
+  name: 'history',
+  data:()=>({
+    loading: true,
+    records: [],
+    categories: []
+  }),
+  async mounted(){
+
+ const records = await this.$store.dispatch('fetchRecords')
+// console.log('this.records', this.records)
+ 
+// const categories = await this.$store.dispatch('fetchCategories')
+this.categories = JSON.parse(localStorage.getItem('categoriesActiveUser'));
+this.records = records.map(record =>{
+  return {
+    ...record,
+    categoryName: this.categories.find(c => c.id === record.category_id).record_items,
+    typeClass: record.type === 'income' ? 'green' : 'red',
+    typeText: record.type === 'income' ? 'Доход' : 'Расход',
+
+  }
+    
+})
+  },
+  components: {
+    HistoryTable
+
+  }
+}
+</script>

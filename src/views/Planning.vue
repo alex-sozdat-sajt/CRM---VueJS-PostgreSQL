@@ -18,13 +18,15 @@
       <div v-for="cat of categories" :key="cat.expense_id">
       <p>
         <strong>{{cat.expense_items}}</strong>
-       10 из {{cat.expense_limit}}
+       {{cat.spend | currency}} из {{cat.expense_limit | currency}}
       </p> 
-      <div class="progress" >
+      <div class="progress" v-tooltip="cat.tooltip"
+       
+      >
         <div
-            class="determinate green"
-            :class=[cat.progressColor]
-            style="width:40%"
+            class="determinate"
+            :class="[cat.progressColor]"
+            :style="{width: cat.progressPercent+'%'}"
         ></div>
       </div>
     </div>
@@ -43,6 +45,7 @@
 </template>
 <script>
 import {mapGetters} from 'vuex'
+import currencyFilter from '@/filters/currency.filter'
 export default {
   name: 'planing',
   data: () => ({
@@ -55,15 +58,36 @@ export default {
     //...mapGetters('info')
   },
   async mounted() {
-  const records = await this.$store.dispatch('fetchRecords')
+  // const records = await this.$store.dispatch('fetchRecords')
   // const categories = await this.$store.dispatch('fetchCategories')
-  this.categories = JSON.parse(localStorage.getItem('categoriesActiveUser'));
-  // const categories = JSON.parse(localStorage.getItem('categoriesActiveUser'));
-  // this.categories = categories.map(cat => {
-  //   .filter(r => )
-  // })
+  const categories = JSON.parse(localStorage.getItem('categoriesActiveUser'));
+  
+   
+  this.categories = categories.map(cat => {
+    const spend = cat.expense_limit - cat.remains
+     
+     const percent = spend/cat.expense_limit * 100
+     const progressPercent = percent > 100 ? 100 : percent
+     const progressColor = percent < 60
+     ? 'green'
+     : percent < 100
+      ? 'yellow'
+      : 'red'
+       console.log('categories spend', cat, spend, progressColor)
+  const tooltipValue = cat.expense_limit - spend;
+  const tooltip = `${tooltipValue < 0 ? 'Превышение на' : 'Осталось'} ${currencyFilter(Math.abs(tooltipValue))}`
+  return {
+      ...cat,
+      progressPercent,
+      progressColor,
+      spend,
+      tooltip
+    }
 
-    console.log('this.categories ', this.categories)
+
+  })
+
+   console.log('this.categories ', this.categories)
 
   this.loading = false
   }
