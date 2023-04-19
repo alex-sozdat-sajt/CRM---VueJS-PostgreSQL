@@ -40,7 +40,9 @@ export default {
   }),
   async mounted(){
 
- const records = await this.$store.dispatch('fetchRecords')
+//  const records = await this.$store.dispatch('fetchRecords')
+ const records = JSON.parse(localStorage.getItem('RecordsActiveUser'))
+ console.log('records', records)
 // console.log('this.records', this.records)
  
 // const categories = await this.$store.dispatch('fetchCategories')
@@ -53,8 +55,10 @@ this.records = records.map(record =>{
     typeText: record.type === 'income' ? 'Доход' : 'Расход',
 
   }
+  
     
 })
+  console.log('this.records', this.records)
   },
   components: {
     HistoryTable
