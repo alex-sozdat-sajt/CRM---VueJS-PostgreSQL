@@ -80,7 +80,26 @@ export default {
 				dispatch('fetchCategories')
 			},
 
-			
+			async fetchCategoryById({commit, dispatch}, id){
+				const headers = {
+				  'Content-Type': 'application/json'
+				}
+				// const body1 = {user_url: '3@mail.ru3Olega'}
+				const body={}
+				 body.category_table = 'category_'+JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['expense'].toLowerCase()
+				 body.category_id = id
+				 console.log( 'body ', body)
+				 const response = await fetch('http://localhost:8000/fetchCategoryById',{
+				  method: 'POST',
+				  body: JSON.stringify(body),
+				  headers: headers
+				 })
+				 const data = await  response.json()
+				 console.log('data', data)
+				//  localStorage.removeItem('dataActiveUsertoStorage');
+				//  localStorage.setItem('RecordsActiveUser', JSON.stringify(data));
+				 return data
+			  },
 			async createCategory({store, commit, dispatch}, category){
 					try {
 						console.log('createCategory category', category)

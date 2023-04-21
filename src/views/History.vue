@@ -14,9 +14,12 @@
     <canvas></canvas>
   </div>
 <Loader v-if="loading"/>
-<p class="center" v-else-if="!records.length">Записей пока нет</p>
+<p class="center" v-else-if="!records.length">
+  Записей пока нет.
+  <router-link to="/record">Добавьте первую</router-link>
+  </p>
   <section v-else> 
-   <HistoryTable :records="records" />
+   <HistoryTable :records="items" />
   </section>
 </div>
 
@@ -28,12 +31,23 @@
     <i class="large material-icons">add</i>
   </a>
 </div>
+<Paginate
+ :page-count="pageCount"
+  :click-handler="pageChangeHandler"
+  :prev-text="'Назад'"
+  :next-text="'Вперед'"
+  :container-class="'pagination'"
+  :page-class="'waves-effect'"
+
+ />
 </div>
 </template>
 <script>
+import paginationMixin from '@/mixins/pagination.mixin'
 import HistoryTable from '@/components/HistoryTable'
 export default {
   name: 'history',
+  mixines:[paginationMixin],
   data:()=>({
     loading: true,
     records: [],
@@ -41,12 +55,14 @@ export default {
   }),
   async mounted(){
 
-//  const records = await this.$store.dispatch('fetchRecords')
- const records = JSON.parse(localStorage.getItem('RecordsActiveUser'))
+  const records = await this.$store.dispatch('fetchRecords')
+// const records = JSON.parse(localStorage.getItem('RecordsActiveUser'))
 //  console.log('records', records)
 // console.log('this.records', this.records)
  
-// const categories = await this.$store.dispatch('fetchCategories')
+const categories = await this.$store.dispatch('fetchCategories')
+console.log('categories', categories)
+//здесь категории можно забрать из геттера а не из локалстореджа
 this.categories = JSON.parse(localStorage.getItem('categoriesActiveUser'));
  console.log('this.categories', this.categories)
  console.log('records', records)
@@ -56,17 +72,19 @@ this.categories = JSON.parse(localStorage.getItem('categoriesActiveUser'));
       for(let j=0; j<this.categories.length; j++){
             console.log('this.categories', this.categories[j])
             if(records[i].category_id === this.categories[j].expense_id){
-              console.log('this.cat!!!!!!!!!!!!!!!!!!!!!!egories')
+              
               records[i].categoryName = this.categories[j].expense_items
-              records[i].typeClass =  records[i].type === 'income' ? 'green' : 'red'
-              records[i].typeText =  records[i].type === 'income' ? 'Доход' : 'Расход'
+              records[i].typeClass = records[i].record_type === 'income' ? 'green' : 'red'
+              records[i].typeText =  records[i].record_type === 'income' ? 'Доход' : 'Расход'
               
             }
      
       }
   }
-this.records = records;
-this.loading = false;
+  this.setupPagination(records)
+
+  this.records = records;
+  this.loading = false;
 // this.records = records.map(record =>{
   // for(let i=1; i<this.categories.length; i++){
   //   if(record.category_id === this.categories[i].expense_id){
@@ -95,6 +113,11 @@ this.loading = false;
 
   console.log('this.records 1', records)
    
+  },
+  methods:{
+    pageChangeHandler(){
+
+    }
   },
   components: {
     HistoryTable

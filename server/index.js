@@ -34,8 +34,12 @@ app.get("/getActiveUser", db.getActiveUser);
 app.post("/addCategory", db.addCategory);
 app.post("/addRecord", db.addRecord);
 app.post("/fetchRecords", db.fetchRecords);
+app.post("/fetchRecordById", db.fetchRecordById);
 app.put("/updateCategory", db.updateCategory);
 app.post("/fetchCategories", db.fetchCategories);
+app.post("/fetchCategoryById", db.fetchCategoryById);
+
+ 
 
 
 

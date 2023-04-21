@@ -39,6 +39,25 @@ export default {
        localStorage.setItem('RecordsActiveUser', JSON.stringify(data));
        return data
     },
-
+    async fetchRecordById({commit, dispatch}, id){
+      const headers = {
+        'Content-Type': 'application/json'
+      }
+      // const body1 = {user_url: '3@mail.ru3Olega'}
+      const body={}
+       body.record_table = 'record_'+JSON.parse(localStorage.getItem('dataActiveUsertoStorage'))['expense'];
+       body.record_id = id;
+       console.log( 'body ', body)
+       const response = await fetch('http://localhost:8000/fetchRecordById',{
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers: headers
+       })
+       const data = await  response.json()
+       console.log('data', data)
+      //  localStorage.removeItem('dataActiveUsertoStorage');
+      //  localStorage.setItem('RecordsActiveUser', JSON.stringify(data));
+       return data
+    },
 }
 }

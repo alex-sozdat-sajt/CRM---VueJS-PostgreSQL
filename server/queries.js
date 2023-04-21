@@ -205,7 +205,7 @@ const setActiveUser = (request, response) => {
       const rebill = bill + amount;
       const re_remains = remains + amount;
       pool.query(
-        `UPDATE crmuser SET bill = ${rebill} WHERE email1=${email}`, (error, results) => {
+        `UPDATE crmuser SET bill = ${rebill} WHERE e_mail1='${email}'`, (error, results) => {
           if (error) {
             throw error;
           }
@@ -265,6 +265,26 @@ const setActiveUser = (request, response) => {
       }
     );
   };
+   /**** my  fetchCategoryId    results.insertId*/
+   const fetchCategoryById = (request, response) => {
+    console.log('fetchCategoriesfetchCategoriesfetchCategoriesfetchCategoriesfetchCategoriesfetchCategoriesfetchCategoriesfetchCategories'); 
+    const  {category_table, category_id} = request.body;
+       
+    // const category_table = `category_${table_name}`
+    console.log('category_table fetch', category_table);
+    const sql =  'SELECT * FROM '+`${category_table} WHERE expense_id=${category_id} `
+    console.log(sql);
+    pool.query(
+        sql,
+        (error, results) => {
+        if (error) {
+          throw error;
+        }
+        response.status(200).json(results.rows);
+        console.log(results);
+      }
+    );
+  };
    /**** my  fetchRecord    results.insertId*/
    const fetchRecords = (request, response) => {
     console.log('fetchRecordfetchRecordfetchRecordfetchRecord'); 
@@ -273,6 +293,25 @@ const setActiveUser = (request, response) => {
     // const record_table = `record_${table_name}`
     console.log('record_table fetch', record_table);
     const sql =  'SELECT * FROM '+`${record_table}`
+    console.log(sql);
+    pool.query(
+        sql,
+        (error, results) => {
+        if (error) {
+          throw error;
+        }
+        response.status(200).json(results.rows);
+        console.log(results);
+      }
+    );
+  };
+  /**** my  fetchRecordId    *******************/
+  const fetchRecordById = (request, response) => {
+    console.log('fetchRecordIdfetchRecordIdfetchRecordIdfetchRecordId'); 
+    const  {record_table, record_id} = request.body
+    console.log('record_table ', record_table);
+    console.log('record_id', record_id);
+    const sql =  'SELECT * FROM '+`${record_table} WHERE record_id=${record_id}`
     console.log(sql);
     pool.query(
         sql,
@@ -373,5 +412,7 @@ module.exports = {
   addCategory,
   updateCategory,
   fetchCategories,
+  fetchCategoryById,
+  fetchRecordById
 };
  
