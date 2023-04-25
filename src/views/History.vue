@@ -14,7 +14,7 @@
     <canvas></canvas>
   </div>
 <Loader v-if="loading"/>
-<p class="center" v-else-if="!records.length">
+<p class="center" v-else-if="!items.length">
   Записей пока нет.
   <router-link to="/record">Добавьте первую</router-link>
   </p>
@@ -31,7 +31,8 @@
     <i class="large material-icons">add</i>
   </a>
 </div>
-<Paginate
+ <Paginate
+  v-model="page"
  :page-count="pageCount"
   :click-handler="pageChangeHandler"
   :prev-text="'Назад'"
@@ -47,7 +48,7 @@ import paginationMixin from '@/mixins/pagination.mixin'
 import HistoryTable from '@/components/HistoryTable'
 export default {
   name: 'history',
-  mixines:[paginationMixin],
+  mixins:[paginationMixin],
   data:()=>({
     loading: true,
     records: [],
@@ -81,10 +82,12 @@ this.categories = JSON.parse(localStorage.getItem('categoriesActiveUser'));
      
       }
   }
-  this.setupPagination(records)
+  // this.setupPagination(records)
 
-  this.records = records;
+  //  this.records = records;
+  this.records = this.setupPagination(records);
   this.loading = false;
+
 // this.records = records.map(record =>{
   // for(let i=1; i<this.categories.length; i++){
   //   if(record.category_id === this.categories[i].expense_id){
@@ -115,9 +118,7 @@ this.categories = JSON.parse(localStorage.getItem('categoriesActiveUser'));
    
   },
   methods:{
-    pageChangeHandler(){
-
-    }
+    
   },
   components: {
     HistoryTable
